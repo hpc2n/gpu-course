@@ -89,13 +89,6 @@ int main(int argc, char const **argv)
         return EXIT_FAILURE;
     }
 
-    // wait until the GPU has finished computing and transfering the data
-
-    if (cudaDeviceSynchronize() != cudaSuccess) {
-        fprintf(stderr, "[error] cudaDeviceSynchronize() failed.\n");
-        return EXIT_FAILURE;
-    }
-
     // validate the result
 
     for (int i = 0; i < n; i++) {

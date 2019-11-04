@@ -1,5 +1,5 @@
-#CPU_LIBS=-lblas
-CPU_LIBS=$(LIBBLAS_MT)
+CPU_LIBS=-lblas
+#CPU_LIBS=$(LIBBLAS_MT)
 CUDA_LIBS=-lcublas
 
 all: hello.cuda ax.cuda axpy.cpu axpy.cuda gemm.cpu gemm.cuda
