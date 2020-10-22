@@ -85,4 +85,4 @@
     going to be very large. Why? Can you fix the problem?
     
     Hint: Is some familiar command missing? Compare to
-    [hello.cu](../1.compiling/hello.cu).
+    [hello.cu](../1.threads/hello.cu).
