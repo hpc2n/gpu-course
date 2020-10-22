@@ -59,8 +59,15 @@
        cublasStatus_t cublasDestroy(cublasHandle_t handle)
        ```
     
-    Compile and test the program. The program should compile and run without
-    any problems but the residual is going to be very large. Why? Can you
-    fix the problem?
+    Compile and test the program:
     
-    Hint: Is some familiar command missing? Compare to previous programs.
+    ```
+    $ nvcc axpy.cu -lcublas
+    $ srun ... ./axpy 10000
+    Residual = 1.159904e+02
+    ```
+    
+    The program should compile and run without any problems but the residual is
+    going to be very large. Why? Can you fix the problem?
+    
+    Hint: Is some familiar command missing? Compare to `hello.cu`.
