@@ -17,7 +17,8 @@ should be avoided.
  1. Carefully read through the `hello.cu` file. Make sure that you have an idea
     of what each line of code does.
 
- 2. Modify the kernel such that it prints the thread index:
+ 2. Modify the kernel such that it prints the thread index (remove the old
+    `printf` line):
  
     ```
     printf("Thread %d says, Hello world!\n", threadIdx.x);
@@ -27,7 +28,8 @@ should be avoided.
     `<<< . , . >>>` brackets). Run the modified program. How many rows are
     printed? The correct number should be 17. Why?
 
- 3. Modify the kernel such that it prints the thread block index:
+ 3. Modify the kernel such that it prints the thread block index (remove the old
+    `printf` line):
  
     ```
     printf("Thread %d in block %d says, Hello world!\n",
