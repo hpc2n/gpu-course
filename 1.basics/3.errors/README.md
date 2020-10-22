@@ -63,6 +63,10 @@ should be avoided.
     const char* cudaGetErrorString ( cudaError_t error )
     ```
 
+    In C, `%d` causes the `printf` function to print an integer, `%s` causes
+    it to print a character string and `%e` causes it to print a floating-point
+    number.
+    
     Compile and run the program. Was there an error? Do you see anything wrong
     with the kernel? It did print something...
     
