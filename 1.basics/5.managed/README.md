@@ -66,7 +66,7 @@
     Compile and test the program (note the argument `-lcublas`):
     
     ```
-    $ nvcc axpy.cu -lcublas
+    $ nvcc -o axpy axpy.cu -lcublas
     $ srun ... ./axpy 10000
     Residual = 1.159904e+02
     ```
