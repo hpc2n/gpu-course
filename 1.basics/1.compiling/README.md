@@ -4,7 +4,7 @@
 
  - Learn how to load the necessary modules on Kebnekaise.
  - Learn how to compile CUDA code.
- - Learn how to place jobs to batch queue.
+ - Learn how to place jobs to the batch queue.
  - Learn how to use the course reservations.
 
 ## Instructions
@@ -85,8 +85,8 @@
     Host says, Hello world!
     GPU says, Hello world!
     ```
-    
-    During the course, you can also use the course reservations (6 GPUs) to get
+
+ 5. During the course, you can also use the course reservations (6 GPUs) to get
     faster access:
     
     ```
@@ -94,13 +94,15 @@
     ```
     
     The reservation `snic2020-9-161-day1` is valid during Wednesday and the
-    reservation `snic2020-9-161-day2` is valid during Thursday.
+    reservation `snic2020-9-161-day2` is valid during Thursday. Try submitting
+    the job using a reservation.
 
- 5. Create a file called `batch.sh` with the following contents:
+ 6. Create a file called `batch.sh` with the following contents:
  
     ```
     #!/bin/bash
     #SBATCH --account=SNIC2020-9-161
+    #SBATCH --reservation=snic2020-9-161-day1
     #SBATCH --ntasks=1
     #SBATCH --gres=gpu:v100:1,gpuexcl
     #SBATCH --time=00:05:00
