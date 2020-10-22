@@ -87,12 +87,14 @@ should be avoided.
     You can use the following macro to make error checks easier:
     
     ```
-    #define CHECK_CUDA_ERROR(exp) {                 \
-        cudaError_t ret = (exp);                    \
-        fprintf(stderr, "[error] %s:%d: %s (%s)\n", \
-            __FILE__, __LINE__,                     \
-            cudaGetErrorName(ret),                  \
-            cudaGetErrorString(ret));               \
-        exit(EXIT_FAILURE);                         \
+    #define CHECK_CUDA_ERROR(exp) {                     \
+        cudaError_t ret = (exp);                        \
+        if (ret != cudaSuccess) {                       \
+            fprintf(stderr, "[error] %s:%d: %s (%s)\n", \
+                __FILE__, __LINE__,                     \
+                cudaGetErrorName(ret),                  \
+                cudaGetErrorString(ret));               \
+            exit(EXIT_FAILURE);                         \
+        }                                               \
     }
     ```
