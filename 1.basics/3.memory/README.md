@@ -2,10 +2,9 @@
 
 ## Objectives
 
- - Learn how to allocate memory.
  - Learn how to modify CUDA kernels.
  - Learn how to allocate memory.
- - Learn how to move data from the host memory to the global memory.
+ - Learn how to move data from the host memory to the global memory and back.
 
 ## Instructions
 
