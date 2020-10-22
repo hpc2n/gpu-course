@@ -39,7 +39,7 @@
     Validate the result.
 
     Necessary steps:
-     - Allocate host memory for the vector `x`.
+     - Generate a random vector `x`.
      - Allocate a global memory buffer `d_x` and copy the vector `x` to it.
      - Pass the vector `d_x` to the kernel and modify the `for` loop.
      - Launch the modified kernel.
