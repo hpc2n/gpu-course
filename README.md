@@ -26,9 +26,9 @@ hands-ons.
 
 **Location**: MC313
 
-**Instructors**: Mirko Myllykoski
+**Instructors**: Mirko Myllykoski (HPC2N)
 
-**Deadline for registration**: 2019-10-29
+**Helpers**: Birgitte Brydsö (HPC2N)
 
 ## Materials
 
