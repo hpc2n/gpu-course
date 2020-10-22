@@ -63,7 +63,7 @@
        cublasStatus_t cublasDestroy(cublasHandle_t handle)
        ```
     
-    Compile and test the program:
+    Compile and test the program (note the argument `-lcublas`):
     
     ```
     $ nvcc axpy.cu -lcublas
