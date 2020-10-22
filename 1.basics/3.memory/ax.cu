@@ -12,11 +12,11 @@
     }                                               \
 }
 
-// a kernel that multiplies a vector with a scalar
-__global__ void ax_kernel(int n, double alpha, double *x)
+// a kernel that multiplies a vector y with a scalar alpha
+__global__ void ax_kernel(int n, double alpha, double *y)
 {
     //
-    // Each thread is going to begin from the array element matches it's own
+    // Each thread is going to begin from the array element that matches it's
     // global index number. For blockDim.x = 4, gridDim.x 2, we have:
     // threadIdx.x : 0 1 2 3 0 1 2 3
     // blockIdx.x  : 0 0 0 0 1 1 1 1
@@ -32,7 +32,7 @@ __global__ void ax_kernel(int n, double alpha, double *x)
     // 0 1 2 3,4 5 6 7|0 1 2 3,4 5 6 7|0 1 2 3,4 5 6 7|0 1 2 3,4 5 6 7|0 ...
     //
     for (int i = thread_id; i < n; i += thread_count)
-        x[thread_id] = alpha * x[thread_id];
+        y[thread_id] = alpha * y[thread_id];
 }
 
 int main(int argc, char const **argv)
@@ -56,52 +56,52 @@ int main(int argc, char const **argv)
 
     // allocate host memory for the vector and it's duplicate
 
-    double *x, *_x;
-    if ((x = (double *) malloc(n*sizeof(double))) == NULL) {
+    double *y, *_y;
+    if ((y = (double *) malloc(n*sizeof(double))) == NULL) {
         fprintf(stderr,
-            "[error] Failed to allocate host memory for vector x.\n");
+            "[error] Failed to allocate host memory for vector y.\n");
         return EXIT_FAILURE;
     }
-    if ((_x = (double *) malloc(n*sizeof(double))) == NULL) {
+    if ((_y = (double *) malloc(n*sizeof(double))) == NULL) {
         fprintf(stderr,
-            "[error] Failed to allocate host memory for vector _x.\n");
+            "[error] Failed to allocate host memory for vector _y.\n");
         return EXIT_FAILURE;
     }
 
     // initialize host memory and store a copy for a later validation
 
     for (int i = 0; i < n; i++)
-        x[i] = _x[i] = 1.0*rand()/RAND_MAX;
+        y[i] = _y[i] = 1.0*rand()/RAND_MAX;
 
     // allocate device memory
 
-    double *d_x;
-    CHECK_CUDA_ERROR(cudaMalloc(&d_x, n*sizeof(double)));
+    double *d_y;
+    CHECK_CUDA_ERROR(cudaMalloc(&d_y, n*sizeof(double)));
 
     // copy the vector from the host memory to the device memory
 
     CHECK_CUDA_ERROR(
-        cudaMemcpy(d_x, x, n*sizeof(double), cudaMemcpyHostToDevice));
+        cudaMemcpy(d_y, y, n*sizeof(double), cudaMemcpyHostToDevice));
 
     // launch the kernel
 
     dim3 threads = 128;
     dim3 blocks = min(n, 64*threads.x);
-    ax_kernel<<<blocks, threads>>>(n, alpha, d_x);
+    ax_kernel<<<blocks, threads>>>(n, alpha, d_y);
 
     CHECK_CUDA_ERROR(cudaGetLastError());
 
     // copy the vector from the device memory to the host memory
 
     CHECK_CUDA_ERROR(
-        cudaMemcpy(x, d_x, n*sizeof(double), cudaMemcpyDeviceToHost));
+        cudaMemcpy(y, d_y, n*sizeof(double), cudaMemcpyDeviceToHost));
 
     // validate the result by computing sqrt((x-alpha*_x)^2)
 
     double res = 0.0;
     
     for (int i = 0; i < n; i++)
-        res += (x[i]-alpha*_x[i]) * (x[i]-alpha*_x[i]);
+        res += (y[i]-alpha*_y[i]) * (y[i]-alpha*_y[i]);
     
     // A little assistance: comment out the above for loop and use this one
     // to validate the output of the AXPY operation.
@@ -113,6 +113,6 @@ int main(int argc, char const **argv)
 
     // free the allocated memory
 
-    free(x); free(_x);
-    CHECK_CUDA_ERROR(cudaFree(d_x));
+    free(y); free(_y);
+    CHECK_CUDA_ERROR(cudaFree(d_y));
 }

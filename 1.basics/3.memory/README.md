@@ -20,18 +20,18 @@
     ```
     
     The program does the following:
-     - A random vector `x` and it's duplicated `_x` are generated.
-       The program argument `n` defines the length of the vector `x`.
-     - The vector `x` is copied to a global memory buffer `d_x`.
-     - A CUDA kernel multiplies the vector `d_x` with a supplied scalar `alpha`.
-     - The vector `d_x` is copied back to the host memory buffer `x`.
+     - A random vector `y` and it's duplicated `_y` are generated.
+       The program argument `n` defines the length of the vector `y`.
+     - The vector `y` is copied to a global memory buffer `d_y`.
+     - A CUDA kernel multiplies the vector `d_y` with a supplied scalar `alpha`.
+     - The vector `d_y` is copied back to the host memory buffer `y`.
      - The result is validated by computing
      
-       `sqrt((x - (alpha * _x))^2)`.
+       `sqrt((y - (alpha * _y))^2)`.
 
  3. Modify the program such that instead of computing the operation
     
-    `x[i] <- alpha * x[i], i = 0, ..., n-1`, 
+    `y[i] <- alpha * y[i], i = 0, ..., n-1`, 
     
     the program computes so-called AXPY operation
     
@@ -40,12 +40,10 @@
     Validate the result.
 
     Necessary steps:
-     - Allocate host memory for the vector `y` and it's duplicate `_y`.
-     - Allocate a global memory buffer `d_y` and copy the vector `y` to it.
-     - Pass the vector `d_y` to the kernel and modify the `for` loop.
+     - Allocate host memory for the vector `x`.
+     - Allocate a global memory buffer `d_x` and copy the vector `x` to it.
+     - Pass the vector `d_x` to the kernel and modify the `for` loop.
      - Launch the modified kernel.
-     - Copy the vector `d_y` back to the host memory buffer `y`. Note, you do
-       not have to copy the vector `d_x` since it is not modified.
      - Compute
 
        `sqrt((y - (alpha * x + _y))^2)`.
