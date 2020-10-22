@@ -47,14 +47,24 @@
        
        The created *handle* is passed on to the functions that follow.
      
-     - Replace the `cblas_daxpy` function call with the corresponding cuBLAS
-       function:
+     - Replace the BLAS function call
        
        ```
-       cublasStatus_t cublasDaxpy(cublasHandle_t handle, int n,
-                                  const double *alpha,
-                                  const double *x, int incx,
-                                  double       *y, int incy)
+       void cblas_daxpy(
+           int n,
+           const double alpha,
+           const double *x, int incx,
+           double       *y, int incy)
+       ```
+       
+       with the corresponding cuBLAS function:
+       
+       ```
+       cublasStatus_t cublasDaxpy(
+           cublasHandle_t handle, int n,
+           const double *alpha,
+           const double *x, int incx,
+           double       *y, int incy)
        ```
        
      - Shutdown the cuBLAS library with the function:
