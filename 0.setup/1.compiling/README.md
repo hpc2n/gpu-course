@@ -58,10 +58,11 @@
     This passed the `-Wall` flag to `g++`. The flag causes the compiler to print
     extra warnings.
 
- 4. During the course, you can use the course reservations (6 GPUs) to get a
-    faster access to the GPUs. The reservation `snic2020-9-161-day1` is valid
-    during Wednesday and the reservation `snic2020-9-161-day2` is valid during
-    Thursday. The reservations are valid from 08:45 to 17:30.
+ 4. During the course, you can use the course reservations (6 Nvidia V100 GPUs)
+    to get a faster access to the GPUs. The reservation `snic2020-9-161-day1` is
+    valid during Wednesday and the reservation `snic2020-9-161-day2` is valid
+    during Thursday. The reservations are valid from 08:45 to 17:30. Jobs that
+    are submitted outside this time window are not scheduled.
   
     Run the program:
  
@@ -88,24 +89,13 @@
     You can also create an alias for the command:
     
     ```
-    $ alias run_gpu="srun -A SNIC2020-9-161 --reservation=snic2020-9-161-day1 -n 1 --gres=gpu:v100:1,gpuexcl -t 00:05:00"
+    $ alias run_gpu="srun --account=SNIC2020-9-161 --reservation=snic2020-9-161-day1 --ntasks=1 --gres=gpu:v100:1,gpuexcl --time=00:05:00"
     $ run_gpu ./hello
     Host says, Hello world!
     GPU says, Hello world!
     ```
 
- 5. During the course, you can also use the course reservations (6 GPUs) to get
-    faster access:
-    
-    ```
-    $ srun ... --reservation=<reservation name> ...
-    ```
-    
-    The reservation `snic2020-9-161-day1` is valid during Wednesday and the
-    reservation `snic2020-9-161-day2` is valid during Thursday. Try submitting
-    the job using a reservation.
-
- 6. Create a file called `batch.sh` with the following contents:
+ 5. Create a file called `batch.sh` with the following contents:
  
     ```
     #!/bin/bash
