@@ -32,16 +32,19 @@
     Compile and test the program.
 
  4. Modify the program such that is uses the cuBLAS library to perform the AXPY
-    operation.
+    operation. You can use the `CHECK_CUBLAS_ERROR` macro for error checking.
     
     Steps:
     
      - Include the `cublas_v2.h` header file.
+
      - Initialize cuBLAS with the function:
        
        ```
        cublasStatus_t cublasCreate(cublasHandle_t *handle)
        ```
+       
+       The created *handle* is passed on to the functions that follow.
      
      - Replace the `cblas_daxpy` function call with the corresponding cuBLAS
        function:
