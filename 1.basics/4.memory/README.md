@@ -3,6 +3,8 @@
 ## Objectives
 
  - Learn how to allocate memory.
+ - Learn how to modify CUDA kernels.
+ - Learn how to allocate memory.
  - Learn how to move data from the host memory to the global memory.
 
 ## Instructions
@@ -14,13 +16,13 @@
  
     ```
     $ srun ... ./ax 10000
-    $ Residual = 0.000000e+00
+    Residual = 0.000000e+00
     ```
     
     The program does the following:
      - A random vector `x` and it's duplicated `_x` are generated.
-       The program argument defines the length of the vector `x`.
-     - The vector `x` is copied to the global memory buffer `d_x`.
+       The program argument `n` defines the length of the vector `x`.
+     - The vector `x` is copied to a global memory buffer `d_x`.
      - A CUDA kernel multiplies the vector `d_x` with a supplied scalar `alpha`.
      - The vector `d_x` is copied back to the host memory buffer `x`.
      - The result is validated by computing
@@ -29,22 +31,21 @@
 
  3. Modify the program such that instead of computing the operation
     
-    `x[i] <- alpha * x[i]`, 
+    `x[i] <- alpha * x[i], i = 0, ..., n-1`, 
     
-    the program computes the AXPY operation
+    the program computes so-called AXPY operation
     
-    `y[i] <- alpha * x[i] + y[i]`. 
+    `y[i] <- alpha * x[i] + y[i], i = 0, ..., n-1`. 
     
     Validate the result.
 
     Necessary steps:
-     - Pass the vector `y` to the kernel and modify the `for` loop.
      - Allocate host memory for the vector `y` and it's duplicate `_y`.
-     - Allocate global memory for the vector `y`.
-     - Copy the vector `y` to the global memory.
+     - Allocate a global memory buffer `d_y` and copy the vector `y` to it.
+     - Pass the vector `d_y` to the kernel and modify the `for` loop.
      - Launch the modified kernel.
-     - Copy the vector `y` back to the host memory. Note, you do not have to
-       copy the vector `x` since it is not modified.
+     - Copy the vector `d_y` back to the host memory buffer `y`. Note, you do
+       not have to copy the vector `d_x` since it is not modified.
      - Compute
 
        `sqrt((y - (alpha * x + _y))^2)`.
