@@ -54,7 +54,7 @@ int main(int argc, char const **argv)
     
     srand(time(NULL));
 
-    // allocate host memory the vector and it's duplicate
+    // allocate host memory for the vector and it's duplicate
 
     double *x, *_x;
     if ((x = (double *) malloc(n*sizeof(double))) == NULL) {
@@ -68,7 +68,7 @@ int main(int argc, char const **argv)
         return EXIT_FAILURE;
     }
 
-    // initialize host memory and store a copy for validation
+    // initialize host memory and store a copy for a later validation
 
     for (int i = 0; i < n; i++)
         x[i] = _x[i] = 1.0*rand()/RAND_MAX;
