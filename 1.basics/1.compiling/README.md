@@ -25,8 +25,9 @@
     $ git clone https://git.cs.umu.se/mirkom/gpu_course.git
     ```
     
-    After using the system for a while, you may get a warning about an expired
-    Kerberos ticket. You can renew the ticket with the `kinit` command.
+    After using the system for a while, your Kerberos ticket may expire. If that
+    happens, then you can no longer write access your file. You can renew the
+    ticket with the `kinit` command.
 
  2. Load the necessary modules (only in Kebnekaise):
  
