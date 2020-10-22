@@ -21,7 +21,7 @@
     the necessary files to the `~/pfs/` directory:
     
     ```
-    $ ~/pfs/
+    $ cd ~/pfs/
     $ git clone https://git.cs.umu.se/mirkom/gpu_course.git
     ```
     
