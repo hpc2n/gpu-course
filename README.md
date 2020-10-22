@@ -28,7 +28,11 @@ knowledge but basic understanding of the C language and parallel programming are
 required for the hands-ons.
 
 **Date**: 2020-11-04 and 2020-11-05 (two day course)
+
 **Time**: 9:00-17:00 each day
+
 **Location**: Online
+
 **Instructor**: Mirko Myllykoski
+
 **Helpers**: Pedro Ojeda-May, Birgitte Brydsö
