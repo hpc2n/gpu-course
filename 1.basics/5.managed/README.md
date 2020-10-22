@@ -25,7 +25,8 @@
     managed memory. Use the following functions:
     
     ```
-    cudaError_t cudaMallocManaged ( void** devPtr, size_t size, unsigned int flags = cudaMemAttachGlobal )
+    cudaError_t cudaMallocManaged ( 
+        void** devPtr, size_t size, unsigned int flags = cudaMemAttachGlobal )
     cudaError_t cudaFree ( void* devPtr )
     ```
     
