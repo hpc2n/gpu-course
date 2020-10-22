@@ -70,4 +70,5 @@
     The program should compile and run without any problems but the residual is
     going to be very large. Why? Can you fix the problem?
     
-    Hint: Is some familiar command missing? Compare to `hello.cu`.
+    Hint: Is some familiar command missing? Compare to
+    [hello.cu](../1.compiling/hello.cu).
