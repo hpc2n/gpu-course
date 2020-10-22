@@ -58,10 +58,15 @@
     This passed the `-Wall` flag to `g++`. The flag causes the compiler to print
     extra warnings.
 
- 4. Run the program:
+ 4. During the course, you can use the course reservations (6 GPUs) to get a
+    faster access to the GPUs. The reservation `snic2020-9-161-day1` is valid
+    during Wednesday and the reservation `snic2020-9-161-day2` is valid during
+    Thursday. The reservations are valid from 08:45 to 17:30.
+  
+    Run the program:
  
     ```
-    $ srun --account=SNIC2020-9-161 --ntasks=1 --gres=gpu:v100:1,gpuexcl --time=00:05:00 ./hello
+    $ srun --account=SNIC2020-9-161 --reservation=snic2020-9-161-day1 --ntasks=1 --gres=gpu:v100:1,gpuexcl --time=00:05:00 ./hello
     srun: job .... queued and waiting for resources
     srun: job .... has been allocated resources
     Host says, Hello world!
@@ -71,18 +76,28 @@
     This can take a few minutes if several people are trying to use the GPUs
     simultaneously. 
     
-    The `srun` command places the program into a batch queue, 
-     - `--account=SNIC2020-9-161` sets the account number, 
+    The `srun` command places the program into the batch queue, 
+     - `--account=SNIC2020-9-161` sets the account number,
+     - `--reservation=snic2020-9-161-day1` sets the reservation,
      - `--ntasks=1` sets the number of tasks to one,
      - `--gres=gpu:v100:1,gpuexcl` requests exclusive access to a single Nvidia
        Tesla V100 GPU (and 14 CPU cores), 
      - `--time=00:05:00` sets the maximum run time to five minutes, 
     and the last argument the is the program itself.
     
-    It is also possible to shorten the command as follows:
+    It is possible to shorten the command as follows:
     
     ```
-    $ srun -A SNIC2020-9-161 -n 1 --gres=gpu:v100:1,gpuexcl -t 00:05:00 ./hello
+    $ srun -A SNIC2020-9-161 --reservation=snic2020-9-161-day1 -n 1 --gres=gpu:v100:1,gpuexcl -t 00:05:00 ./hello
+    Host says, Hello world!
+    GPU says, Hello world!
+    ```
+    
+    You can also create an alias for the command:
+    
+    ```
+    $ alias run_gpu="srun -A SNIC2020-9-161 --reservation=snic2020-9-161-day1 -n 1 --gres=gpu:v100:1,gpuexcl -t 00:05:00"
+    $ run_gpu ./hello
     Host says, Hello world!
     GPU says, Hello world!
     ```
