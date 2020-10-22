@@ -1,4 +1,4 @@
-# Hello world!
+# Threads, thread blocks and grids
 
 ## Objectives
 
