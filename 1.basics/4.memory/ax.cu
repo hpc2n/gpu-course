@@ -103,7 +103,8 @@ int main(int argc, char const **argv)
     for (int i = 0; i < n; i++)
         res += (x[i]-alpha*_x[i]) * (x[i]-alpha*_x[i]);
     
-    // a little assistance:
+    // A little assistance: comment out the above for loop and use this one
+    // to validate the output of the AXPY operation.
     // for (int i = 0; i < n; i++)
     //    res +=
     //        (y[i] - (alpha * x[i] + _y[i])) * (y[i] - (alpha * x[i] + _y[i]));
