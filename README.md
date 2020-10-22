@@ -33,6 +33,6 @@ required for the hands-ons.
 
 **Location**: Online
 
-**Instructor**: Mirko Myllykoski
+**Instructor**: Mirko Myllykoski (HPC2N)
 
-**Helpers**: Pedro Ojeda-May, Birgitte Brydsö
+**Helpers**: Pedro Ojeda-May (HPC2N), Birgitte Brydsö (HPC2N)
