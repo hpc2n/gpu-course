@@ -5,6 +5,13 @@
  - Learn what CUDA kernels.
  - Learn what threads, thread blocks and grids are.
 
+## Remark
+
+In this hands-on, we are using very small thread block sizes for illustration
+purposes only. In practice, the threads blocks should be significantly larger.
+Furthermore, using the `printf` function inside kernels is very expensive and
+should be avoided.
+
 ## Instructions
 
  1. Carefully read through the `hello.cu` file. Make sure that you have an idea
