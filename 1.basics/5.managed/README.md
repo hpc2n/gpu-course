@@ -1,4 +1,4 @@
-# Managed memory
+# Managed memory and cuBLAS
 
 ## Objectives
 
