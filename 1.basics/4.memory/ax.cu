@@ -99,8 +99,15 @@ int main(int argc, char const **argv)
     // validate the result by computing sqrt((x-alpha*_x)^2)
 
     double res = 0.0;
+    
     for (int i = 0; i < n; i++)
         res += (x[i]-alpha*_x[i]) * (x[i]-alpha*_x[i]);
+    
+    // a little assistance:
+    // for (int i = 0; i < n; i++)
+    //    res +=
+    //        (y[i] - (alpha * x[i] + _y[i])) * (y[i] - (alpha * x[i] + _y[i]));
+    
     printf("Residual = %e\n", sqrt(res));
 
     // free the allocated memory
