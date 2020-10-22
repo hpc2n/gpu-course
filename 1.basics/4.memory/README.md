@@ -34,3 +34,15 @@
     `y[i] <- alpha * x[i] + y[i]`. 
     
     Validate the result.
+
+    Necessary steps:
+     - Pass the `y` vector to the kernel and modify the for loop.
+     - Allocate host memory for the `y` vector (and it's duplicate `_y`).
+     - Allocate global memory for the `y` vector.
+     - Copy the `y` vector to the global memory`
+     - Launch the modified kernel.
+     - Copy the `y` vector back to the host memory. Note, you do not have to
+       copy the `x` vector since it is not modified.
+     - Compute
+
+       `sqrt((y - (alpha * x + _y))^2)`.
