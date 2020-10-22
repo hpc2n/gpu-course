@@ -18,7 +18,7 @@
     Residual = 0.000000e+00
     ```
     
-    The program implements the same functionality as the hands-on "4.memory" but
+    The program implements the same functionality as the hands-on "3.memory" but
     relies on the BLAS library to perform the AXPY operation.
 
  3. Modify the program such that the vectors `x` and `y` are allocated using
