@@ -1,8 +1,9 @@
 # Hello world!
 
-## Objective
+## Objectives
 
- - Learn what CUDA kernels are and how to manage threads and thread blocks.
+ - Learn what CUDA kernels.
+ - Learn what threads, thread blocks and grids are.
 
 ## Instructions
 
