@@ -75,20 +75,22 @@ should be avoided.
     
     ```
     ​cudaError_t cudaMalloc ( void** devPtr, size_t size )
-    cudaError_t cudaMemcpy ( void* dst, const void* src, size_t count, cudaMemcpyKind kind )
+    cudaError_t cudaMemcpy ( 
+        void* dst, const void* src, size_t count, cudaMemcpyKind kind )
     cudaError_t cudaDeviceSynchronize ( void )
     ```
     
-    Check the error codes returned by all these three function calls. Also, 
-    print the name of the function so that you can more easily see which
-    function returned the error code. 
+    Check the error codes returned by all three function calls. Also, print the
+    name of the function so that you can more easily see which function returned 
+    the error code. 
     
     Compile, run the program and locate the function that caused the problem.
     
-    Can you see anything wrong with it? Can you fix it? Why did the kernel
-    launch return an error?
+    Can you see anything wrong with the function? Can you fix the problem? Why
+    did the kernel launch return an error?
     
-    You can use the following macro to make error checks easier:
+    Hint: In general, you can use the following macro to make error checks
+    easier:
     
     ```
     #define CHECK_CUDA_ERROR(exp) {                     \
