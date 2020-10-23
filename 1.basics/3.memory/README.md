@@ -5,13 +5,14 @@
  - Learn how to modify CUDA kernels.
  - Learn how to allocate memory.
  - Learn how to move data from the host memory to the global memory and back.
+ - Learn how to record runtime.
 
 ## Instructions
 
  1. Carefully read through the `ax.cu` file. Make sure that you have an idea
     of what each line of code does.
 
- 2. Compile and run the program. The program requires a single argument:
+ 2. The program requires a single argument. Compile and run the program:
  
     ```
     $ srun ... ./ax 10000
@@ -46,3 +47,40 @@
      - Compute
 
        `sqrt((y - (alpha * x + _y))^2)`.
+
+ 4. Time how long it takes to compute the AXPY operation with different
+    vector lengths. Use n = 100, n = 10000 and n = 1000000. You should record
+    the current time i) just before launching the kernel and ii) just after the
+    `cudaMemcpy` function call. Write down your results.
+    
+    The execution time can be measured in many different ways. Try **both** of
+    the following approaches:
+    
+     - Use the `clock_gettime` function:
+     
+       ```
+       struct timespec {
+           time_t   tv_sec;        /* seconds */
+           long     tv_nsec;       /* nanoseconds */
+       };
+       int clock_gettime ( clockid_t clk_id, struct timespec *tp )
+       ```
+       
+       For example,
+       
+       ```
+       struct timespec start, stop;
+       clock_gettime(CLOCK_REALTIME, &start);
+       
+       ....
+       
+       clock_gettime(CLOCK_REALTIME, &stop);
+
+       double time =
+           (stop.tv_sec - start.tv_sec) + (stop.tv_nsec - start.tv_nsec)*1E-9;
+
+       printf("Runtime was %f seconds.\n", time);
+       ```
+       
+    
+    
