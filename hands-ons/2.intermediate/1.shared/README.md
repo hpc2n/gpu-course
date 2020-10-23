@@ -50,7 +50,7 @@ multiple CUDA kernels are used.
 
  3. Create a second kernel (`final_sum_kernel`) that sums together the elements
     of the vector `y`. At this point, it is sufficient that the kernel is
-    single-threaded, i.e.:
+    **single-threaded**, i.e.:
     
     ```
     final_sum_kernel<<<1, 1>>>(m, d_y);
