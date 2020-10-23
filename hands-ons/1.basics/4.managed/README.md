@@ -73,7 +73,8 @@
        cublasStatus_t cublasDestroy(cublasHandle_t handle)
        ```
     
- 5. Compile and test the program (note the argument `-lcublas`):
+ 5. Please pay close attention to this last step. Compile and test the program
+    (note the argument `-lcublas`):
     
     ```
     $ nvcc -o axpy axpy.cu -lcublas
@@ -81,8 +82,8 @@
     Residual = 1.159904e+02
     ```
     
-    The program should compile and run without any problems but the residual is
-    going to be very large. Why? Can you fix the problem?
+    The program should compile and run without any errors. However, the result
+    is incorrect (the residual is very large). Why? **Fix the problem.**
     
     Hint: Is some familiar command missing? Compare to
     [hello.cu](../1.threads/hello.cu).
