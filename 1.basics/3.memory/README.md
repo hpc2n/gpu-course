@@ -53,10 +53,8 @@
     the current time i) just before launching the kernel and ii) just after the
     `cudaMemcpy` function call. Write down your results.
     
-    The execution time can be measured in many different ways. Try **both** of
-    the following approaches:
-    
-     - Use the `clock_gettime` function:
+    The execution time can be measured in many different ways. For now, we will
+    use the `clock_gettime` function:
      
        ```
        struct timespec {
