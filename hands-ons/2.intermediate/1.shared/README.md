@@ -149,13 +149,16 @@ multiple CUDA kernels are used.
 
  6. Modify the `partial_sum_kernel` such that each thread block computes just
     a single partial sum. In the end, the `i`'th thread block should store it's
-    partial sum to `y[i]`.
+    partial sum to `y[i]`. Take a look at the `final_sum_kernel` and see what
+    could be reused.
     
-    Modify the `main` function such that the length of the vector `y` (`m`)
-    is the same as the number of thread block in first CUDA kernel.
+    Remember to modify the `main` function such that the length of the vector
+    `y` (the variable `m`) is the same as the number of thread block in first
+    kernel.
+    
     Compile and test your modified program.
     
-    Hint: Combine `partial_sum_kernel` and `final_sum_kernel` into a single
-    kernel that is called twice: Once to compute `m` partial sums and once to
-    sum the `m` partial sums together.
+    Hint: If you are clever, you can combine `partial_sum_kernel` and
+    `final_sum_kernel` into a single kernel that is called twice: Once to
+    compute `m` partial sums and once to sum the `m` partial sums together.
     
