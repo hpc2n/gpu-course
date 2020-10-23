@@ -32,7 +32,7 @@ __global__ void ax_kernel(int n, double alpha, double *y)
     // 0 1 2 3,4 5 6 7|0 1 2 3,4 5 6 7|0 1 2 3,4 5 6 7|0 1 2 3,4 5 6 7|0 ...
     //
     for (int i = thread_id; i < n; i += thread_count)
-        y[thread_id] = alpha * y[thread_id];
+        y[i] = alpha * y[i];
 }
 
 int main(int argc, char const **argv)
@@ -86,7 +86,7 @@ int main(int argc, char const **argv)
     // launch the kernel
 
     dim3 threads = 128;
-    dim3 blocks = min(n, 64*threads.x);
+    dim3 blocks = min(64, (int) ceil(n/threads.x));
     ax_kernel<<<blocks, threads>>>(n, alpha, d_y);
 
     CHECK_CUDA_ERROR(cudaGetLastError());
