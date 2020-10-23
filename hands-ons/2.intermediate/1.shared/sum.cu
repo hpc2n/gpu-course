@@ -65,6 +65,9 @@ int main(int argc, char **argv)
             "[error] The intermediate vector length was invalid.\n");
         return EXIT_FAILURE;
     }
+    
+    // in order to keep things simple, m is converted to a multiple of
+    // THREAD_BLOCK_SIZE
     m = DIVCEIL(m, THREAD_BLOCK_SIZE)*THREAD_BLOCK_SIZE;
         
     srand(time(NULL));
