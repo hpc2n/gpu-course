@@ -122,7 +122,8 @@ int main(int argc, char **argv)
     
     partial_sum_kernel<<<1, THREAD_BLOCK_SIZE>>>(m, d_y, d_y);
     
-    // copy the vector y from the device memory to the host memory
+    // copy the first element of the vector y from the device memory to the host
+    // memory
     
     CHECK_CUDA_ERROR(
         cudaMemcpy(y, d_y, sizeof(double), cudaMemcpyDeviceToHost));
