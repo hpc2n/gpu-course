@@ -24,21 +24,22 @@ __global__ void partial_sum_kernel(int n, double const *x, double *y)
 {
     __shared__ double tmp[THREAD_BLOCK_SIZE];
     
-    // each thread computes a partial sum
-    
     int thread_id = blockIdx.x * blockDim.x + threadIdx.x;
     int thread_count = gridDim.x * blockDim.x;
 
+    // each thread computes a partial sum v = x[thread_id] + 
+    //     x[thread_id+thread_count] + x[thread_id+2*thread_count] + ...
+    
     double v = 0.0;
     for (int i = thread_id; i < n; i += thread_count)
         v += x[i];
     
-    // the partial sums are stored to the shared memory
+    // the partial sums are stored to a shared memory buffer
     
     tmp[threadIdx.x] = v;
     __syncthreads();
  
-    // each thread block computes a partial sum
+    // each thread block sums together the elements of the shared memory buffer
     
     int active = THREAD_BLOCK_SIZE/2;
     while (0 < active) {

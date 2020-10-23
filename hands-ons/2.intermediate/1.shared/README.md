@@ -8,7 +8,7 @@
 
 ## Remark
 
-The purpose of this hands-on is not to teach the optimal way of summing together
+The purpose of this hands-on is not to learn the optimal way of summing together
 the elements of a vector. It is simply meant illustrate how shared memory and
 multiple CUDA kernels are used.
  
@@ -46,19 +46,19 @@ multiple CUDA kernels are used.
 
  3. Create a second kernel (`final_sum_kernel`) that sums together the elements
     of the vector `y`. At this point, it is sufficient that the kernel is
-    single-threaded:
+    single-threaded, i.e:
     
     ```
     final_sum_kernel<<<1, 1>>>(m, d_y);
     ```
     
     The kernel should store the final sum to the first element of the vector
-    `y`. Transfer the first element back to the host memory and validate 
+    `y`. Transfer the **first** element back to the host memory and validate 
     the result.
     
     Compile and test your modified program.
 
- 4. Modify the `final_sum_kernel` such that it uses multiple threads:
+ 4. Modify the `final_sum_kernel` such that it uses multiple threads, i.e.:
  
     ```
     final_sum_kernel<<<1, THREAD_BLOCK_SIZE>>>(m, d_y);
@@ -80,13 +80,13 @@ multiple CUDA kernels are used.
         // blockDim.x.
         for (....
     
-        // store the partial sums to the shared memory
+        // store the partial sums to the shared memory array
         tmp[threadIdx.x] = v;
         
-        // wait until all threads in the thread block are ready
+        // wait until all threads in the same thread block are ready
         __syncthreads();
         
-        // the first thread computes the final sum
+        // the first thread of the thread block computes the final sum
         if (threadIdx.x == 0) {
             double vv = 0;
             for (int i = 0; i < THREAD_BLOCK_SIZE; i++)
@@ -98,8 +98,8 @@ multiple CUDA kernels are used.
     
     Implement the missing `for` loop. Compile and test your modified program.
     
- 5. Replace the second half of the kernel (everything after `__syncthreads()`)
-    with the following:
+ 5. Replace the second half of the kernel (everything after `__syncthreads`
+    function call) with the following:
     
     ```
     int active = THREAD_BLOCK_SIZE/2;
@@ -116,9 +116,9 @@ multiple CUDA kernels are used.
     
     As explained during the lecture, each iteration of the `while` loop sums
     together elements `tmp[i]` and `tmp[i+active]`, where `i < active`. Each
-    thread them stores the result back to the array `tmp` and waits until all
-    other threads have done the same. The number of involved threads is halved
-    after each iteration. Imagine the following:
+    thread them stores the result back to `tmp[i]` and waits until all other
+    threads have done the same. The number of *active* threads is halved after
+    each iteration. Imagine the following example:
     
     ```
     3 3 5 1|4 5 2 4  THREAD_BLOCK_SIZE = 8
@@ -142,12 +142,14 @@ multiple CUDA kernels are used.
     Compile and test your modified program.
 
  6. Modify the `partial_sum_kernel` such that each thread block computes just
-    one partial sum. i'th thread block should store it's partial sum to `y[i]`.
+    a single partial sum. In the end, the `i`'th thread block should store it's
+    partial sum to `y[i]`.
     
     Modify the `main` function such that the length of the vector `y` (`m`)
     is the same as the number of thread block in first CUDA kernel.
     Compile and test your modified program.
     
     Hint: Combine `partial_sum_kernel` and `final_sum_kernel` into a single
-    kernel.
+    kernel that is called twice: Once to compute `m` partial sums and once to
+    sum the `m` partial sums together.
     
