@@ -46,7 +46,7 @@ multiple CUDA kernels are used.
 
  3. Create a second kernel (`final_sum_kernel`) that sums together the elements
     of the vector `y`. At this point, it is sufficient that the kernel is
-    single-threaded, i.e:
+    single-threaded, i.e.:
     
     ```
     final_sum_kernel<<<1, 1>>>(m, d_y);
@@ -54,17 +54,18 @@ multiple CUDA kernels are used.
     
     The kernel should store the final sum to the first element of the vector
     `y`. Transfer the **first** element back to the host memory and validate 
-    the result.
+    the result. Remove the now obsolite `for` loop.
     
     Compile and test your modified program.
 
- 4. Modify the `final_sum_kernel` such that it uses multiple threads, i.e.:
+ 4. Modify the `final_sum_kernel` kernel such that it uses multiple threads,
+    i.e.:
  
     ```
     final_sum_kernel<<<1, THREAD_BLOCK_SIZE>>>(m, d_y);
     ```
     
-    Modify the the kernel as follows:
+    Start by replacing the body of the kernel with the following:
     
     ```
     __global__ void final_sum_kernel(int n, double *x)
@@ -98,8 +99,8 @@ multiple CUDA kernels are used.
     
     Implement the missing `for` loop. Compile and test your modified program.
     
- 5. Replace the second half of the kernel (everything after `__syncthreads`
-    function call) with the following:
+ 5. Replace the second half of the `final_sum_kernel` kernel (everything after
+    `__syncthreads` function call) with the following:
     
     ```
     int active = THREAD_BLOCK_SIZE/2;
@@ -114,11 +115,11 @@ multiple CUDA kernels are used.
         x[0] = tmp[0];
     ```
     
-    As explained during the lecture, each iteration of the `while` loop sums
-    together elements `tmp[i]` and `tmp[i+active]`, where `i < active`. Each
-    thread them stores the result back to `tmp[i]` and waits until all other
-    threads have done the same. The number of *active* threads is halved after
-    each iteration. Imagine the following example:
+    As explained during the lecture, on each iteration of the loop, the `i`th
+    thread sums together the elements `tmp[i]` and `tmp[i+active]`, where
+    `i < active`. The thread stores the result back to `tmp[i]` and waits until
+    all other threads have done the same. The number of *active* threads is
+    halved after each iteration. Imagine the following example:
     
     ```
     3 3 5 1|4 5 2 4  THREAD_BLOCK_SIZE = 8
