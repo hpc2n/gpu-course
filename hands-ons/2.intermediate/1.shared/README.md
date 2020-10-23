@@ -115,11 +115,12 @@ multiple CUDA kernels are used.
         x[0] = tmp[0];
     ```
     
-    As explained during the lecture, on each iteration of the loop, the `i`th
-    thread sums together the elements `tmp[i]` and `tmp[i+active]`, where
-    `i < active`. The thread stores the result back to `tmp[i]` and waits until
-    all other threads have done the same. The number of *active* threads is
-    halved after each iteration. Imagine the following example:
+    As explained during the lecture, only a subset of the thread are *active*
+    during an iteration. If the `i`th thread is active, then it sums together
+    the elements `tmp[i]` and `tmp[i+active]`, stores the result back to
+    `tmp[i]`, and waits until all other threads have done the same. The number
+    of *active* threads is halved after each iteration. Imagine the following
+    example:
     
     ```
     3 3 5 1|4 5 2 4  THREAD_BLOCK_SIZE = 8
