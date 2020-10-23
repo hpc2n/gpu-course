@@ -68,6 +68,8 @@ int main(int argc, char const **argv)
     double alpha = 2.0;
     CHECK_CUBLAS_ERROR(cublasDaxpy(handle, n, &alpha, x, 1, y, 1));
     
+    // wait until cuBLAS has finished, otherwise the validation will fail
+    
     CHECK_CUDA_ERROR(cudaDeviceSynchronize());
 
     // validate the result
