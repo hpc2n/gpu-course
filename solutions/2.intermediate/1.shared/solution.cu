@@ -17,8 +17,7 @@
 
 //
 // A kernel that partially sums together a vector x. The partial sums are stored
-// to a vector y such that
-//     y[i] = x[i] + x[i+thread_block_count] + x[i+2*thread_block_count] + ...
+// to a vector y such that y[blockIdx.x] = <partial sum>.
 //
 __global__ void partial_sum_kernel(int n, double const *x, double *y)
 {
