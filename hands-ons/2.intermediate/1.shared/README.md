@@ -19,7 +19,7 @@ the elements of a vector. The goal is to learn about the shared memory etc.
  2. The program requires two argument. Compile and run the program:
  
     ```
-    $ nvcc -o sum sum.cu
+    $ nvcc -o sum sum.cu
     $ srun ... ./sum 10000 1024
     Residual = 2.025358e-15
     ```
@@ -80,8 +80,8 @@ the elements of a vector. The goal is to learn about the shared memory etc.
         
         // Each thread computes a partial sum as done in the partial_sum_kernel
         // kernel and stores the result to the variable v. Remember, in this
-        // case, we have just one thread block, i.e., use threadIdx.x and
-        // blockDim.x.
+        // case, we have only one thread block and you should therefore use the
+        // threadIdx.x and blockDim.x constants directly.
         for (....
     
         // store the partial sums to the shared memory array
