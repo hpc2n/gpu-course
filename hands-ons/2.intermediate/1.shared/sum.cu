@@ -102,11 +102,9 @@ int main(int argc, char **argv)
     CHECK_CUDA_ERROR(
         cudaMemcpy(d_x, x, n*sizeof(double), cudaMemcpyHostToDevice));
 
-    // launch the kernel
+    // launch the kernel, note that m is a multiple of THREAD_BLOCK_SIZE
     
-    dim3 threads = THREAD_BLOCK_SIZE;
-    dim3 blocks = DIVCEIL(m, threads.x);
-    partial_sum_kernel<<<blocks, threads>>>(n, d_x, d_y);
+    partial_sum_kernel<<<m/THREAD_BLOCK_SIZE, THREAD_BLOCK_SIZE>>>(n, d_x, d_y);
     
     // copy the vector y from the device memory to the host memory
     
