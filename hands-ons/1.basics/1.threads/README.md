@@ -72,5 +72,6 @@ should be avoided.
     thread indexes `(0,0) - (3,1)` and the thread block indexes `(0,0) - (1,2)`
     are printed.
     
- 7. Comment out the `cudaDeviceSynchronize()` call. What happens? Why?
+ 7. Please pay close attention to this last step. Comment out the
+    `cudaDeviceSynchronize()` function call. What happens? Why?
  
