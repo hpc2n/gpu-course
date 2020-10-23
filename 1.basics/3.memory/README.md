@@ -79,6 +79,7 @@
 
        printf("Runtime was %f seconds.\n", time);
        ```
-       
+
+ 5. Try end the timing just after the kernel launch. What happens? Why?   
     
     
