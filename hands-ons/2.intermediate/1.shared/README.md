@@ -45,8 +45,8 @@ multiple CUDA kernels are used.
     program argument defines the length of the vector `y`.
     
     Note that in order to keep things simple, the thread block size is fixed
-    to `THREAD_BLOCK_SIZE` and the length of the vector `y` (`m`) in converted
-    to a multiple of `THREAD_BLOCK_SIZE`.
+    to `THREAD_BLOCK_SIZE` and the length of the vector `y` (given by the
+    variable `m`) is converted to a multiple of `THREAD_BLOCK_SIZE`.
 
  3. Create a second kernel (`final_sum_kernel`) that sums together the elements
     of the vector `y`. At this point, it is sufficient that the kernel is
