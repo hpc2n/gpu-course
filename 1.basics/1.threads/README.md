@@ -3,6 +3,7 @@
 ## Objectives
 
  - Learn what CUDA kernels are.
+ - Learn how to make trivial changes to CUDA kernels.
  - Learn what threads, thread blocks and grids are.
 
 ## Remark
