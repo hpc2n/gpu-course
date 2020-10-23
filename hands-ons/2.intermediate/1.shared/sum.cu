@@ -39,6 +39,16 @@ __global__ void partial_sum_kernel(int n, double const *x, double *y)
     y[thread_id] = v;
 }
 
+// a function that sums together a vector x and stores the result to the first
+// element of the vector
+void final_sum(int n, double *x)
+{
+    double v = 0;
+    for (int i = 0; i < n; i++)
+        v += x[i];
+    x[0] = v;
+}
+
 int main(int argc, char **argv)
 {
     // read and validate the command line arguments
@@ -113,9 +123,8 @@ int main(int argc, char **argv)
     
     // compute the final sum
     
-    double sum = 0;
-    for (int i = 0; i < m; i++)
-        sum += y[i];
+    final_sum(m, y);
+    double sum = y[0];
 
     // validate the result (Kahan)
     

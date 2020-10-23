@@ -58,7 +58,7 @@ multiple CUDA kernels are used.
     
     The kernel should store the final sum to the first element of the vector
     `y`. Transfer the **first** element back to the host memory and validate 
-    the result. Remove the now obsolite `for` loop.
+    the result. Remove the now obsolite `final_sum` function.
     
     Compile and test your modified program.
 
