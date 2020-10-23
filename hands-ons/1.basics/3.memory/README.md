@@ -15,6 +15,7 @@
  2. The program requires a single argument. Compile and run the program:
  
     ```
+    $ nvcc -o ax ax.cu
     $ srun ... ./ax 10000
     Residual = 0.000000e+00
     ```
