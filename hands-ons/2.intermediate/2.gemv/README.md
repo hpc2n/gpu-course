@@ -59,6 +59,8 @@
     Therefore, the barrier **cannot** be inside the `if` block!
     
     Compile and test your modified program.
+
+    Can you tell why are we using the the thread block indices in this manner?
     
     Hint: Allocate `threads.y * threads.x * sizeof(double)` bytes of shared
     memory:
@@ -84,6 +86,7 @@
     tmp[threadIdx.y*blockDim.x + threadIdx.x] = v;
     ```
 
+    Remember, threads that belong to the warp access the memory together.
     
     
     
