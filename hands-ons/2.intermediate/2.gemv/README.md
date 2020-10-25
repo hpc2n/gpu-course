@@ -61,6 +61,7 @@
     Compile and test your modified program.
 
     Can you tell why are we using the the thread block indices in this manner?
+    Pay attention to how the memory is accessed.
     
     Hint: Allocate `threads.y * threads.x * sizeof(double)` bytes of shared
     memory:
