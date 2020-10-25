@@ -43,15 +43,41 @@
 
     Furthermore, note that the thread block size is 1 x 128 x 1 and the grid
     size is 1 x Gy x 1, where Gy = (m+threads.y-1)/threads.y.
+    
+ 3. Modify the program such that global memory matrix `d_A` is allocated using
+    the `cudaMallocPitch` function and transferred using the `cudaMemcpy2D`
+    function:
+    
+    ```
+    cudaError_t cudaMallocPitch	(
+        void ** devPtr,
+        size_t * pitch,
+        size_t width,
+        size_t height	 
+    )
+    cudaError_t cudaMemcpy2D (
+        void * dst,
+        size_t dpitch,
+        const void * src,
+        size_t spitch,
+        size_t width,
+        size_t height,
+        enum cudaMemcpyKind kind	 
+    )	
+    ```
+    
+    Remember, since the matrix is stored in the column-major format, `width` is
+    the height of the matrix in **bytes** and `height` is the width of the
+    matrix.
 
- 3. Modify the `gemv_kernel` kernel such that it uses two-dimensional thread
+ 4. Modify the `gemv_kernel` kernel such that it uses two-dimensional thread
     blocks. For now, use the `y` dimension for computations. Simply make sure
     that all threads that have `threadIdx.x != 0` skip the `if` block. Set the
     thread block size to `32 x 32`. 
     
     Compile and test your modified program.
 
- 4. Modify the `gemv_kernel` kernel such that the thread block's `x` dimension
+ 5. Modify the `gemv_kernel` kernel such that the thread block's `x` dimension
     is used to loop over the columns of the matrix. That is, parallelize the
     `for` loop. Use shared memory to communicate the partial sums.
     
