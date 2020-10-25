@@ -129,4 +129,16 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
  6. (challenge) Modify the program so that it uses managed memory. Make sure
     that the leading dimension is a multiple of the L2 cache line width (128) in
     bytes. The driver aligns memory to 256 bytes.
-    
+
+ 7. (challenge) Compare your implementation against cuBLAS:
+ 
+    ```
+    cublasStatus_t cublasDgemv(
+        cublasHandle_t handle, cublasOperation_t trans,
+        int m, int n,
+        const double *alpha,
+        const double *A, int lda,
+        const double *x, int incx,
+        const double *beta,
+        double       *y, int incy)
+    ```
