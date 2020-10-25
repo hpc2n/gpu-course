@@ -41,12 +41,12 @@ __global__ void partial_sum_kernel(int n, double const *x, double *y)
 
 // a function that sums together a vector x and stores the result to the first
 // element of the vector
-void final_sum(int n, double *x)
+double final_sum(int n, double *x)
 {
     double v = 0;
     for (int i = 0; i < n; i++)
         v += x[i];
-    x[0] = v;
+    return v;
 }
 
 int main(int argc, char **argv)
@@ -123,8 +123,7 @@ int main(int argc, char **argv)
     
     // compute the final sum
     
-    final_sum(m, y);
-    double sum = y[0];
+    double sum = final_sum(m, y);
 
     // validate the result (Kahan)
     
