@@ -103,8 +103,7 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     
     Implement the missing `for` loop. Compile and test your modified program.
     
- 5. Replace the second half of the `final_sum_kernel` kernel (everything after
-    the `__syncthreads` function call) with the following:
+ 5. Replace the second half of the `final_sum_kernel` kernel with the following:
     
     ```
         ....
