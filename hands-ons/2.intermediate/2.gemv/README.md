@@ -6,6 +6,11 @@
  - Learn how to coordinate thread execution.
  - Learn how to manage matrices.
 
+## Remark
+
+The purpose of this hands-on is not to learn the optimal way of computing a
+matrix-vector multiplication. The goal is to learn about the shared memory etc.
+
 ## Instructions
 
  1. Carefully read through the `gemv.cu` file. Make sure that you have an idea
