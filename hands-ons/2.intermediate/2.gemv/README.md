@@ -109,18 +109,15 @@
     gemv_kernel<<<blocks, threads, shared_size>>>(....);
     ```
     
-    Each treads should store it's partial sum to
+    Each treads should store it's partial sum `v` to `tmp` as follows:
     
     ```
     tmp[threadIdx.y*blockDim.x + threadIdx.x] = v;
     ```
     
-    The final result is computed by summing together elements
-    
-    ```
-    tmp[threadIdx.y*blockDim.x + 0], tmp[threadIdx.y*blockDim.x + 1], ..., 
-        tmp[threadIdx.y*blockDim.x + blockDim.x-1]
-    ```
+    The final result is computed by summing together elements 
+    `tmp[threadIdx.y*blockDim.x + 0]`, `tmp[threadIdx.y*blockDim.x + 1]`, ..., 
+    and `tmp[threadIdx.y*blockDim.x + blockDim.x-1]`.
 
     Remember, threads that belong to the warp access the memory together.
     
