@@ -108,6 +108,7 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     ```
         ....
     
+        // wait until all threads in the same thread block are ready
         __syncthreads();
     
         int active = THREAD_BLOCK_SIZE/2;
