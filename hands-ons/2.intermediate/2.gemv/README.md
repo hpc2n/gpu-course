@@ -44,12 +44,12 @@
     Furthermore, note that the thread block size is 1 x 128 x 1 and the grid
     size is 1 x Gy x 1, where Gy = (m+threads.y-1)/threads.y.
     
- 3. Modify the program such that global memory matrix `d_A` is allocated using
+ 3. Modify the program such that global memory buffer `d_A` is allocated using
     the `cudaMallocPitch` function and transferred using the `cudaMemcpy2D`
     function:
     
     ```
-    cudaError_t cudaMallocPitch	(
+    cudaError_t cudaMallocPitch (
         void ** devPtr,
         size_t * pitch,
         size_t width,
@@ -68,7 +68,7 @@
     
     Remember, since the matrix is stored in the column-major format, `width` is
     the height of the matrix in **bytes** and `height` is the width of the
-    matrix.
+    matrix. Pitch is the leading dimension of the matrix in **bytes**.
 
  4. Modify the `gemv_kernel` kernel such that it uses two-dimensional thread
     blocks. For now, use the `y` dimension for computations. Simply make sure
