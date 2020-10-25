@@ -32,7 +32,8 @@ __global__ void gemv_kernel(
     // dynamically allocated shared memory array
     extern __shared__ double tmp[];
     
-    // we are assuming that each row of the vector y gets it's own thread
+    // we are assuming that each row of the vector y gets it's own thread in
+    // the y dimension
     int thread_id = blockIdx.y * blockDim.y + threadIdx.y;
     
     double v = 0.0;
