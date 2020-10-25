@@ -69,6 +69,8 @@
     Remember, since the matrix is stored in the column-major format, `width` is
     the height of the matrix in **bytes** and `height` is the width of the
     matrix. Pitch is the leading dimension of the matrix in **bytes**.
+    
+    Compile and test your modified program.
 
  4. Modify the `gemv_kernel` kernel such that it uses two-dimensional thread
     blocks. For now, use the `y` dimension for computations. Simply make sure

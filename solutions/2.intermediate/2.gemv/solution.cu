@@ -123,8 +123,12 @@ int main(int argc, char **argv)
 
     // allocate device memory
 
-    double *d_A, *d_y, *d_x;
-    CHECK_CUDA_ERROR(cudaMalloc(&d_A, n*ldA*sizeof(double)));
+    double *d_A, *d_y, *d_x; int ld_dA;
+    {
+        size_t pitch;
+        CHECK_CUDA_ERROR(cudaMallocPitch(&d_A, &pitch, m*sizeof(double), n));
+        ld_dA = pitch/sizeof(double);
+    }
     CHECK_CUDA_ERROR(cudaMalloc(&d_y, m*sizeof(double)));
     CHECK_CUDA_ERROR(cudaMalloc(&d_x, n*sizeof(double)));
     
@@ -132,7 +136,8 @@ int main(int argc, char **argv)
     // memory
 
     CHECK_CUDA_ERROR(
-        cudaMemcpy(d_A, A, n*ldA*sizeof(double), cudaMemcpyHostToDevice));
+        cudaMemcpy2D(d_A, ld_dA*sizeof(double), A, ldA*sizeof(double), 
+            m*sizeof(double), n, cudaMemcpyHostToDevice));
     CHECK_CUDA_ERROR(
         cudaMemcpy(d_x, x, n*sizeof(double), cudaMemcpyHostToDevice));
 
@@ -141,7 +146,7 @@ int main(int argc, char **argv)
     dim3 threads(32, 32);
     dim3 blocks(1, (m+threads.y-1)/threads.y);
     size_t shared_size = threads.y*threads.x*sizeof(double);
-    gemv_kernel<<<blocks, threads, shared_size>>>(m, n, ldA, d_A, d_x, d_y);
+    gemv_kernel<<<blocks, threads, shared_size>>>(m, n, ld_dA, d_A, d_x, d_y);
     
     // copy the vector y from the device memory to the host memory
     
