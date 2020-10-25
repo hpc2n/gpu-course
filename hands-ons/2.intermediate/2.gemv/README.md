@@ -67,7 +67,7 @@
     ```
     
     Remember, since the matrix is stored in the column-major format, `width` is
-    the height of the matrix in **bytes** and `height` is the width of the
+    the **height** of the matrix in **bytes** and `height` is the width of the
     matrix. Pitch is the leading dimension of the matrix in **bytes**.
     
     Compile and test your modified program.
