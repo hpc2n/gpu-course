@@ -54,7 +54,7 @@ int main(int argc, char const **argv)
 
     // call the kernel
     dim3 threads = 32;
-    dim3 blocks = (n+threads.x)/threads.x; 
+    dim3 blocks = (n+threads.x-1)/threads.x; 
     print_array<<<blocks, threads>>>(n, device);
     
     ret = cudaGetLastError();
