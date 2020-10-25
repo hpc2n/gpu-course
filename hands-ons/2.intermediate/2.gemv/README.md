@@ -142,3 +142,5 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
         const double *beta,
         double       *y, int incy)
     ```
+    
+    More information: https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemv
