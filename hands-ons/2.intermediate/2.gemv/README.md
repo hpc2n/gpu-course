@@ -85,12 +85,12 @@
     
     Remember that all threads must encounter the `__syncthreads()` barrier.
     Therefore, the barrier **cannot** be inside the `if` block!
-    
-    Compile and test your modified program.
 
     Can you tell why are we using the the thread block indices in this manner?
     Pay attention to how the memory is accessed.
     
+    Compile and test your modified program.
+
     Hint: Allocate `threads.y * threads.x * sizeof(double)` bytes of shared
     memory:
  
