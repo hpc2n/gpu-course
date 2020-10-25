@@ -118,6 +118,6 @@
     Remember, threads that belong to the warp access the memory together.
     
  6. (challenge) Modify the program so that it uses managed memory. Make sure
-    that the leading dimension is a multiple of the GPU L2 cache line width
-    (128) in bytes. The driver aligns memory to 256 bytes.
+    that the leading dimension is a multiple of the L2 cache line width (128) in
+    bytes. The driver aligns memory to 256 bytes.
     
