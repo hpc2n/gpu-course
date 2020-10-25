@@ -48,6 +48,8 @@
      - Compute
 
        `sqrt((y - (alpha * x + _y))^2)`.
+       
+     - Free the vector `x`.
 
  4. Time how long it takes to compute the AXPY operation with different
     vector lengths. Use n = 100, n = 10000 and n = 1000000. You should record
