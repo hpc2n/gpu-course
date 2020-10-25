@@ -171,10 +171,8 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     Hint: If you are clever, you can combine both kernel into a single kernel
     that is called twice: Once to compute `m` partial sums and once to sum the
     `m` partial sums together.
-
- 7. (challenge) Modify the program so that it uses managed memory.
  
- 8. (challenge) Compare your implementation against cuBLAS:
+ 7. (challenge) Compare your implementation against cuBLAS:
  
     ```
     cublasStatus_t cublasDasum(
@@ -184,3 +182,4 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     
     More information: https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-asum
     
+ 8. (challenge) Modify the program so that it uses managed memory.

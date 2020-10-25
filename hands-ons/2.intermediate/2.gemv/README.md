@@ -125,12 +125,8 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     and `tmp[threadIdx.y*blockDim.x + blockDim.x-1]`.
 
     Remember, threads that belong to the warp access the memory together.
-    
- 6. (challenge) Modify the program so that it uses managed memory. Make sure
-    that the leading dimension is a multiple of the L2 cache line width (128) in
-    bytes. The driver aligns memory to 256 bytes.
 
- 7. (challenge) Compare your implementation against cuBLAS:
+ 6. (challenge) Compare your implementation against cuBLAS:
  
     ```
     cublasStatus_t cublasDgemv(
@@ -144,3 +140,7 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     ```
     
     More information: https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemv
+
+ 7. (challenge) Modify the program so that it uses managed memory. Make sure
+    that the leading dimension is a multiple of the L2 cache line width (128) in
+    bytes. The driver aligns memory to 256 bytes.
