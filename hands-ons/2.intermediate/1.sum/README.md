@@ -173,4 +173,14 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     `m` partial sums together.
 
  7. (challenge) Modify the program so that it uses managed memory.
+ 
+ 8. (challenge) Compare your implementation against cuBLAS:
+ 
+    ```
+    cublasStatus_t cublasDasum(
+        cublasHandle_t handle, int n,
+        const double *x, int incx, double *result)
+    ```
+    
+    More information: https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-asum
     
