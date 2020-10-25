@@ -107,25 +107,37 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     the `__syncthreads` function call) with the following:
     
     ```
-    int active = THREAD_BLOCK_SIZE/2;
-    while (0 < active) {
-        if (threadIdx.x < active)
-            tmp[threadIdx.x] += tmp[active+threadIdx.x];
-        active /= 2;
+        ....
+    
         __syncthreads();
-    }
+    
+        int active = THREAD_BLOCK_SIZE/2;
+        while (0 < active) {
+            ....
+        }
 
-    if (threadIdx.x == 0)
-        x[0] = tmp[0];
+        if (threadIdx.x == 0)
+            x[0] = tmp[0];
+    }
     ```
     
-    As explained during the lecture, only a subset of the thread are *active*
-    during each iteration. If the `i`th thread is active, then it sums together
-    the elements `tmp[i]` and `tmp[i+active]`, stores the result back to
-    `tmp[i]`, and waits until all other threads have done the same. The number
-    of active threads is halved after each iteration. Imagine the following
-    example:
+    Implement the missing `while` loop such that the elements of the array `tmp`
+    are added together in parallel.
     
+    Compile and test your modified program.
+    
+    Hint: Implement a pairwise summation: Only a subset of the thread are
+    *active* during each iteration. If the `i`th thread is active, then it adds
+    together the elements `tmp[i]` and `tmp[i+active]`, stores the result back
+    to `tmp[i]`, and waits until all other threads have done the same. This is
+    repeated until all number have been summed together. The number of active
+    threads is halved after each iteration.
+    
+    Remember that all threads must encounter the `__syncthreads()` barrier.
+    Therefore, the barrier **cannot** be inside a `if` block!
+    
+    Imagine the following example:
+
     ```
     3 3 5 1|4 5 2 4  THREAD_BLOCK_SIZE = 8
     
@@ -144,8 +156,6 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     -----            __syncthreads();
     27
     ```
-    
-    Compile and test your modified program.
 
  6. Modify the `partial_sum_kernel` such that each thread block computes only
     a single partial sum. The `i`'th thread block should store it's partial sum
