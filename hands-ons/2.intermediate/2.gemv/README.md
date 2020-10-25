@@ -1,4 +1,4 @@
-# Threads, thread blocks and grids
+# Computing a matrix-vector multiplication
 
 ## Objectives
 
