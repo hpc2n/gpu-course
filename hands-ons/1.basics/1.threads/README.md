@@ -45,17 +45,17 @@ should be avoided.
     print "Hello world!" and the threads that belong to the thread block `1`
     print "Hello Umea!". Run the modified program.
 
- 5. Modify the the kernel such that each thread prints an unique global index
+ 5. Modify the the kernel such that each thread prints a unique global index
     number. Remember,
-     - `threadIdx.x` is thread's index number inside a thread block.
+     - `threadIdx.x` is the thread's index number inside a thread block.
      - `blockDim.x` is the thread block size, i.e., how many threads are in a
        thread block.
      - `blockIdx.x` is the thread block's index number.
      - `gridDim.x` is the thread grid size, i.e., how many thread blocks are in
        the grid.
     
-    One way of computing an unique index number is to multiply the thread block
-    index with the thread block size and add thread's index number. Run the
+    One way of computing a unique index number is to multiply the thread block
+    index with the thread block size and add the thread's index number. Run the
     modified program. Check that the indexes `0-31` are printed.
 
  6. Modify the program such that the thread block dimensions are `4 x 2` and 
