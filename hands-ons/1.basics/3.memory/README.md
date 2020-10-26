@@ -21,7 +21,7 @@
     ```
     
     The program does the following:
-     - A random vector `y` and it's duplicated `_y` are generated.
+     - A random vector `y` and it's duplicate `_y` are generated.
        The program argument `n` defines the length of the vector `y`.
      - The vector `y` is copied to a global memory buffer `d_y`.
      - A CUDA kernel multiplies the vector `d_y` with a supplied scalar `alpha`.
@@ -34,7 +34,7 @@
     
     `y[i] <- alpha * y[i], i = 0, ..., n-1`, 
     
-    the program computes so-called AXPY operation
+    the program computes the so-called AXPY operation
     
     `y[i] <- alpha * x[i] + y[i], i = 0, ..., n-1`. 
     
