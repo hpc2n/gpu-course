@@ -30,7 +30,8 @@ __global__ void gemv_kernel(
     int m, int n, int ldA, double const *A, double const *x, double *y)
 {
     // dynamically allocated shared memory array
-    extern __shared__ double tmp[];
+    extern __shared__ double _tmp[];
+    double *tmp = &_tmp[threadIdx.y*blockDim.x];
     
     // we are assuming that each row of the vector y gets it's own thread in
     // the y dimension
@@ -54,18 +55,23 @@ __global__ void gemv_kernel(
             v += _A(thread_id, i) * x[i];
         
         // each thread stores it's partial sum
-        tmp[threadIdx.y*blockDim.x + threadIdx.x] = v;
+        tmp[threadIdx.x] = v;
     }
     
     // wait until all threads are ready
     __syncthreads();
     
-    // sum together the partial sums and store the result
-    if (threadIdx.x == 0) {
-        for (int i = 1; i < blockDim.x; i++)
-            v += tmp[threadIdx.y*blockDim.x + i];
-        y[thread_id] = v;
+    // sum together the partial sums
+    int active = blockDim.x/2;
+    while (0 < active) {
+        if (threadIdx.x < active)
+            tmp[threadIdx.x] += tmp[threadIdx.x + active];
+        active /= 2;
+        __syncthreads();
     }
+
+    if (threadIdx.x == 0)
+        y[thread_id] = tmp[0];
 }
 
 int main(int argc, char **argv)
