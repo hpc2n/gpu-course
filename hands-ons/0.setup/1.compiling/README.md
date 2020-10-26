@@ -89,7 +89,7 @@
     You can also create an alias for the command:
     
     ```
-    $ alias run_gpu="srun --account=SNIC2020-9-161 --reservation=snic2020-9-161-day1 --ntasks=1 --gres=gpu:v100:1,gpuexcl --time=00:05:00"
+    $ alias run_gpu="srun --account=SNIC2020-9-161 --reservation=snic2020-9-161-day1 --ntasks=1 --gres=gpu:v100:1,gpuexcl --time=00:02:00"
     $ run_gpu ./hello
     Host says, Hello world!
     GPU says, Hello world!
