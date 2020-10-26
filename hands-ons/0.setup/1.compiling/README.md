@@ -77,13 +77,16 @@
     This can take a few minutes if several people are trying to use the GPUs
     simultaneously. 
     
-    The `srun` command places the program into the batch queue, 
+    The `srun` command places the program into the batch queue,
+    
      - `--account=SNIC2020-9-161` sets the account number,
      - `--reservation=snic2020-9-161-day1` sets the reservation,
      - `--ntasks=1` sets the number of tasks to one,
      - `--gres=gpu:v100:1,gpuexcl` requests exclusive access to a single Nvidia
        Tesla V100 GPU (and 14 CPU cores), 
-     - `--time=00:02:00` sets the maximum run time to two minutes, 
+     - `--time=00:02:00` sets the maximum run time to two minutes (please do not
+       create long jobs),
+     
     and the last argument the is the program itself.
     
     You can also create an alias for the command:
