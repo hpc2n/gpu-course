@@ -16,7 +16,7 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
  1. Carefully read through the `gemv.cu` file. Make sure that you have an idea
     of what each line of code does.
 
- 2. The program requires two argument. Compile and run the program:
+ 2. The program requires two arguments. Compile and run the program:
  
     ```
     $ nvcc -o gemv gemv.cu
@@ -40,7 +40,7 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     The first program argument defines the height of the matrix `A` and the
     second program argument defines the width of the matrix `A`.
     
-    Note that the global indexes are are computed as follows:
+    Note that the global indices are computed as follows:
     
     ```
     int thread_id = blockIdx.y * blockDim.y + threadIdx.y;
@@ -114,7 +114,7 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     gemv_kernel<<<blocks, threads, shared_size>>>(....);
     ```
     
-    Each treads should store it's partial sum `v` to `tmp` as follows:
+    Each tread should store its partial sum `v` to `tmp` as follows:
     
     ```
     tmp[threadIdx.y*blockDim.x + threadIdx.x] = v;
