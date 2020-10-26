@@ -17,7 +17,7 @@
     $ ln -s /pfs/nobackup/${HOME} ${HOME}/pfs
     ```
     
-    The nodes do not have access to you home directory. You must therefore place
+    The batch system do not have access to you home directory. You must therefore place
     the necessary files to the `~/pfs/` directory:
     
     ```
@@ -29,7 +29,7 @@
     happens, then you can no longer write access your file. You can renew the
     ticket with the `kinit` command.
 
- 2. Load the necessary modules (only in Kebnekaise):
+ 2. Load the necessary modules (only on Kebnekaise):
  
     ```
     $ ml purge
@@ -37,7 +37,7 @@
     ```
     
     The `purge` command unload existing modules. Note that the `purge` command
-    will warn that two modules where not unloaded. This is normal and you should
+    will warn that two modules were not unloaded. This is normal and you should
     **NOT** force unload them. The `fosscuda` module loads the GNU compiler,
     the CUDA SDK and several other libraries. The `buildenv` module sets certain
     environment variables.
@@ -55,11 +55,11 @@
     $ nvcc -o hello hello.cu -Xcompiler="-Wall"
     ```
     
-    This passed the `-Wall` flag to `g++`. The flag causes the compiler to print
+    This passes the `-Wall` flag to `g++`. The flag causes the compiler to print
     extra warnings.
 
  4. During the course, you can use the course reservations (6 Nvidia V100 GPUs)
-    to get a faster access to the GPUs. The reservation `snic2020-9-161-day1` is
+    to get faster access to the GPUs. The reservation `snic2020-9-161-day1` is
     valid during Wednesday and the reservation `snic2020-9-161-day2` is valid
     during Thursday. The reservations are valid from 08:45 to 17:30. Jobs that
     are submitted outside this time window are not scheduled.
