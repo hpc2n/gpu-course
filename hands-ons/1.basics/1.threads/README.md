@@ -70,7 +70,7 @@ should be avoided.
     Modify the kernel such that it prints the thread and thread block indexes
     in both `x` and `y` dimensions. Run the modified program. Check that the
     thread indexes `(0,0) - (3,1)` and the thread block indexes `(0,0) - (1,2)`
-    are printed.
+    are printed. You will get a total of 49 lines printed. 
     
  7. Please pay close attention to this last step. Comment out the
     `cudaDeviceSynchronize()` function call. What happens? Why?
