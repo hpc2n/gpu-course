@@ -62,7 +62,9 @@
     to get faster access to the GPUs. The reservation `snic2020-9-161-day1` is
     valid during Wednesday and the reservation `snic2020-9-161-day2` is valid
     during Thursday. The reservations are valid from 08:45 to 17:30. Jobs that
-    are submitted outside this time window are not scheduled.
+    are submitted outside this time window are not scheduled. You can, however,
+    submit jobs without the reservation as long as you are a member of an active
+    project.
   
     Run the program:
  
