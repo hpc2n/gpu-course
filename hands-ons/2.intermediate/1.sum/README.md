@@ -3,7 +3,7 @@
 ## Objectives
 
  - Learn how to use the shared memory.
- - Learn how to coordinate multiple thread.
+ - Learn how to coordinate multiple threads.
  - Learn how to launch multiple kernels.
 
 ## Remark
@@ -16,7 +16,7 @@ the elements of a vector. The goal is to learn about the shared memory etc.
  1. Carefully read through the `sum.cu` file. Make sure that you have an idea
     of what each line of code does.
 
- 2. The program requires two argument. Compile and run the program:
+ 2. The program requires two arguments. Compile and run the program:
  
     ```
     $ nvcc -o sum sum.cu
@@ -35,7 +35,7 @@ the elements of a vector. The goal is to learn about the shared memory etc.
        y[i] = x[i] + x[i+thread_count] + x[i+2*thread_count] + ...
        ```
        
-     - The vector `y` is copied to the host memory and it's elements are summed
+     - The vector `y` is copied to the host memory and its elements are summed
        together.
     
      - The final result is validated using the Kahan summation algorithm.
@@ -58,7 +58,7 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     
     The kernel should store the final sum to the first element of the vector
     `y`. Transfer the **first** element back to the host memory. Remove the now
-    obsolite `final_sum` function.
+    obsolete `final_sum` function.
     
     Compile and test your modified program.
 
@@ -127,14 +127,14 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     Compile and test your modified program.
     
     Hint: Implement a pairwise summation: Only a subset of the thread are
-    *active* during each iteration. If the `i`th thread is active, then it adds
+    *active* during each iteration. If the `i`'th thread is active, then it adds
     together the elements `tmp[i]` and `tmp[i+active]`, stores the result back
     to `tmp[i]`, and waits until all other threads have done the same. This is
-    repeated until all number have been summed together. The number of active
+    repeated until all numbers have been summed together. The number of active
     threads is halved after each iteration.
     
     Remember that all threads must encounter the `__syncthreads()` barrier.
-    Therefore, the barrier **cannot** be inside a `if` block!
+    Therefore, the barrier **cannot** be inside an `if` block!
     
     Imagine the following example:
 
@@ -158,17 +158,17 @@ the elements of a vector. The goal is to learn about the shared memory etc.
     ```
 
  6. Modify the `partial_sum_kernel` such that each thread block computes only
-    a single partial sum. The `i`'th thread block should store it's partial sum
+    a single partial sum. The `i`'th thread block should store its partial sum
     to `y[i]`. Take a look at the `final_sum_kernel` kernel and see what could
-    be reused make this happen.
+    be reused to make this happen.
     
     Remember to modify the `main` function such that the length of the vector
-    `y` (given by the variable `m`) is the same as the number of thread block in
-    first kernel call.
+    `y` (given by the variable `m`) is the same as the number of thread blocks in
+    the first kernel call.
     
     Compile and test your modified program.
     
-    Hint: If you are clever, you can combine both kernel into a single kernel
+    Hint: If you are clever, you can combine both kernels into a single kernel
     that is called twice: Once to compute `m` partial sums and once to sum the
     `m` partial sums together.
  
