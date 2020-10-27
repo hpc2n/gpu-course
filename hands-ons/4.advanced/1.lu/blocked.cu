@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <algorithm>
 #include "common.h"
 
 const double one = 1.0;
