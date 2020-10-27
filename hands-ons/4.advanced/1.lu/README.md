@@ -13,10 +13,12 @@
  
     ```
     $ nvcc -o blocked blocked.cu ${LIBBLAS}
-    $ srun ... ./blocked 10000 128
-    ./blocked 10000 128
-    Time = 5.014233 s
-    Residual = 5.804721E-16
+    $ OPENBLAS_NUM_THREADS=1 srun ... ./blocked 10000 128
+    Time = 13.779339 s
+    Residual = 5.888637E-16
+    $ OPENBLAS_NUM_THREADS=14 srun ... ./blocked 10000 128
+    Time = 1.606935 s
+    Residual = 5.815569E-16
     ```
     
     Write down your runtime.
