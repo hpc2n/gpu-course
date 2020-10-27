@@ -42,10 +42,10 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     second program argument defines the width of the matrix `A`.
     
     The matrix `A` is stored in column-major format, i.e., the columns are
-    stored continuously in the memory. The leading dimension (ldA) defines how
+    stored continuously in the memory. The leading dimension (`ldA`) defines how
     many words (double-precision floating point numbers in this case) are
-    allocated for each column. That is, A[j*ldA+i] is the element on the i'th
-    row and the j'th column of the matrix.
+    allocated for each column. That is, `A[j*ldA+i]` is the element on the
+    `i`'th row and the `j`'th column of the matrix.
     
  3. Modify the program such that global memory buffer `d_A` is allocated using
     the `cudaMallocPitch` function and transferred using the `cudaMemcpy2D`
