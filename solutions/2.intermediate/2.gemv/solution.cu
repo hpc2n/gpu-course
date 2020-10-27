@@ -33,7 +33,7 @@ __global__ void gemv_kernel(
     int m, int n, int ldA, double const *A, double const *x, double *y)
 {
     // dynamically allocated shared memory array
-    extern __shared__ double tmp[][THREAD_BLOCK_SIZE];
+    __shared__ double tmp[THREAD_BLOCK_SIZE][THREAD_BLOCK_SIZE];
     
     // we are assuming that each row of the vector y gets it's own thread in
     // the y dimension
@@ -164,8 +164,7 @@ int main(int argc, char **argv)
     
     dim3 threads(THREAD_BLOCK_SIZE, THREAD_BLOCK_SIZE);
     dim3 blocks((m+THREAD_BLOCK_SIZE-1)/THREAD_BLOCK_SIZE, 1);
-    size_t shared_size = THREAD_BLOCK_SIZE*THREAD_BLOCK_SIZE*sizeof(double);
-    gemv_kernel<<<blocks, threads, shared_size>>>(m, n, ld_dA, d_A, d_x, d_y);
+    gemv_kernel<<<blocks, threads>>>(m, n, ld_dA, d_A, d_x, d_y);
     
     // copy the vector y from the device memory to the host memory
     

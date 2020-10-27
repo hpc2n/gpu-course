@@ -101,15 +101,10 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     __global__ void gemv_kernel(
     int m, int n, int ldA, double const *A, double const *x, double *y)
     {
-        extern __shared__ double tmp[][THREAD_BLOCK_SIZE];
+        __shared__ double tmp[THREAD_BLOCK_SIZE][THREAD_BLOCK_SIZE];
         
         ....
     }
-    
-    ....
-    
-    size_t shared_size = THREAD_BLOCK_SIZE*THREAD_BLOCK_SIZE*sizeof(double);
-    gemv_kernel<<<blocks, threads, shared_size>>>(....);
     ```
     
     Each thread should store its partial sum `v` to `tmp` as follows:
