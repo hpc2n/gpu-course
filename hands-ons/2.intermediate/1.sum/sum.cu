@@ -29,8 +29,8 @@ static int DIVCEIL(int a, int b)
 //
 __global__ void partial_sum_kernel(int n, double const *x, double *y)
 {
-    int thread_id = blockIdx.x * blockDim.x + threadIdx.x;
-    int thread_count = gridDim.x * blockDim.x;
+    int thread_id = blockIdx.x * THREAD_BLOCK_SIZE + threadIdx.x;
+    int thread_count = gridDim.x * THREAD_BLOCK_SIZE;
 
     double v = 0.0;
     for (int i = thread_id; i < n; i += thread_count)

@@ -23,8 +23,8 @@ __global__ void partial_sum_kernel(int n, double const *x, double *y)
 {
     __shared__ double tmp[THREAD_BLOCK_SIZE];
     
-    int thread_id = blockIdx.x * blockDim.x + threadIdx.x;
-    int thread_count = gridDim.x * blockDim.x;
+    int thread_id = blockIdx.x * THREAD_BLOCK_SIZE + threadIdx.x;
+    int thread_count = gridDim.x * THREAD_BLOCK_SIZE;
 
     // each thread computes a partial sum v = x[thread_id] + 
     //     x[thread_id+thread_count] + x[thread_id+2*thread_count] + ...
