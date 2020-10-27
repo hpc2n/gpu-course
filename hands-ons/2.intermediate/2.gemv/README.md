@@ -113,9 +113,9 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     tmp[threadIdx.x][threadIdx.y] = v;
     ```
     
-    The final result is computed by summing together the elements 
-    `tmp[threadIdx.x][0]`, `tmp[threadIdx.x][1]`, `...`, 
-    and `tmp[threadIdx.x][THREAD_BLOCK_SIZE-1]`.
+    For the row `i*THREAD_BLOCK_SIZE+j`, the final result is computed by
+    summing together the elements `tmp[j][0]`, `tmp[j][1]`, `...`, 
+    and `tmp[j][THREAD_BLOCK_SIZE-1]`.
 
     Remember, threads that belong to the warp access the memory together.
 
