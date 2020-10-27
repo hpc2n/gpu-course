@@ -30,7 +30,7 @@ __global__ void gemv_kernel(
     int m, int n, int ldA, double const *A, double const *x, double *y)
 {
     // we are assuming that each row of the vector y gets it's own thread
-    int thread_id = blockIdx.y * blockDim.y + threadIdx.y;
+    int thread_id = blockIdx.x * blockDim.x + threadIdx.x;
     
     if (thread_id < m) {
 
@@ -125,8 +125,8 @@ int main(int argc, char **argv)
 
     // launch the kernel
     
-    dim3 threads(1, 128);
-    dim3 blocks(1, (m+threads.y-1)/threads.y);
+    dim3 threads = 128;
+    dim3 blocks = (m+threads.x-1)/threads.x;
     gemv_kernel<<<blocks, threads>>>(m, n, ldA, d_A, d_x, d_y);
     
     // copy the vector y from the device memory to the host memory

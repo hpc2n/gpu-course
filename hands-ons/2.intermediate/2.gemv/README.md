@@ -40,15 +40,6 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     The first program argument defines the height of the matrix `A` and the
     second program argument defines the width of the matrix `A`.
     
-    Note that the global indices are computed as follows:
-    
-    ```
-    int thread_id = blockIdx.y * blockDim.y + threadIdx.y;
-    ```
-
-    Furthermore, note that the thread block size is 1 x 128 x 1 and the grid
-    size is 1 x Gy x 1, where Gy = (m+threads.y-1)/threads.y.
-    
  3. Modify the program such that global memory buffer `d_A` is allocated using
     the `cudaMallocPitch` function and transferred using the `cudaMemcpy2D`
     function:
@@ -78,51 +69,53 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     Compile and test your modified program.
 
  4. Modify the `gemv_kernel` kernel such that it uses two-dimensional thread
-    blocks. For now, use the `y` dimension for computations. Simply make sure
-    that all threads that have `threadIdx.x != 0` skip the `if` block. Set the
-    thread block size to `32 x 32`. 
+    blocks. For now, use the `x` dimension for computations. Simply make sure
+    that all threads that have `threadIdx.y != 0` skip the `if` block. Set the
+    thread block size to `THREAD_BLOCK_SIZE x THREAD_BLOCK_SIZE`, where 
+    `THREAD_BLOCK_SIZE = 32`.
     
     Compile and test your modified program.
 
- 5. Modify the `gemv_kernel` kernel such that the thread block's `x` dimension
+ 5. Modify the `gemv_kernel` kernel such that the thread block's `y` dimension
     is used to loop over the columns of the matrix. That is, parallelize the
     `for` loop. Use shared memory to communicate the partial sums.
     
     Remember that all threads must encounter the `__syncthreads()` barrier.
-    Therefore, the barrier **cannot** be inside the `if` block!
+    Therefore, the barrier **cannot** be inside the `if` block! You may have
+    to split the `if` block.
 
     Can you tell why are we using the the thread block indices in this manner?
     Pay attention to how the memory is accessed.
     
     Compile and test your modified program.
 
-    Hint: Allocate `threads.y * threads.x * sizeof(double)` bytes of shared
-    memory:
+    Hint: Allocate `THREAD_BLOCK_SIZE * THREAD_BLOCK_SIZE * sizeof(double)` 
+    bytes of shared memory:
  
     ```
     __global__ void gemv_kernel(
     int m, int n, int ldA, double const *A, double const *x, double *y)
     {
-        extern __shared__ double tmp[];
+        extern __shared__ double tmp[][THREAD_BLOCK_SIZE];
         
         ....
     }
     
     ....
     
-    size_t shared_size = threads.y*threads.x*sizeof(double);
+    size_t shared_size = THREAD_BLOCK_SIZE*THREAD_BLOCK_SIZE*sizeof(double);
     gemv_kernel<<<blocks, threads, shared_size>>>(....);
     ```
     
-    Each tread should store its partial sum `v` to `tmp` as follows:
+    Each thread should store its partial sum `v` to `tmp` as follows:
     
     ```
-    tmp[threadIdx.y*blockDim.x + threadIdx.x] = v;
+    tmp[threadIdx.x][threadIdx.y] = v;
     ```
     
-    The final result is computed by summing together elements 
-    `tmp[threadIdx.y*blockDim.x + 0]`, `tmp[threadIdx.y*blockDim.x + 1]`, `...`, 
-    and `tmp[threadIdx.y*blockDim.x + blockDim.x-1]`.
+    The final result is computed by summing together the elements 
+    `tmp[threadIdx.x][0]`, `tmp[threadIdx.x][1]`, `...`, 
+    and `tmp[threadIdx.x][THREAD_BLOCK_SIZE-1]`.
 
     Remember, threads that belong to the warp access the memory together.
 

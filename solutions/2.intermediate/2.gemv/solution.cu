@@ -24,18 +24,20 @@
 //
 #define _A(i, j) (A[(size_t)(j)*ldA+(i)])
 
+// fix thread block dimensions so that blockDim.x = blockDim.y = warp size
+#define THREAD_BLOCK_SIZE 32
+
 // a kernel that perform a matrix-vector multiplication y = A * x, where the
 // matrix A has m rows and n columns
 __global__ void gemv_kernel(
     int m, int n, int ldA, double const *A, double const *x, double *y)
 {
     // dynamically allocated shared memory array
-    extern __shared__ double _tmp[];
-    double *tmp = &_tmp[threadIdx.y*blockDim.x];
+    extern __shared__ double tmp[][THREAD_BLOCK_SIZE];
     
     // we are assuming that each row of the vector y gets it's own thread in
     // the y dimension
-    int thread_id = blockIdx.y * blockDim.y + threadIdx.y;
+    int thread_id = blockIdx.x * THREAD_BLOCK_SIZE + threadIdx.x;
     
     double v = 0.0;
     if (thread_id < m) {
@@ -51,27 +53,37 @@ __global__ void gemv_kernel(
         //
         // y_k = A_k0 * x_0 + A_k1 * x_1 + A_k2 * x_2 ...
         //
-        for (int i = threadIdx.x; i < n; i += blockDim.x)
+        for (int i = threadIdx.y; i < n; i += THREAD_BLOCK_SIZE)
             v += _A(thread_id, i) * x[i];
-        
-        // each thread stores it's partial sum
-        tmp[threadIdx.x] = v;
     }
+    
+    // each thread stores it's partial sum to the shared memory array
+    tmp[threadIdx.x][threadIdx.y] = v;
     
     // wait until all threads are ready
     __syncthreads();
-    
-    // sum together the partial sums
-    int active = blockDim.x/2;
+
+    // sum together the partial sums (note the swapped x-y dimensions)
+    int active = THREAD_BLOCK_SIZE/2;
     while (0 < active) {
         if (threadIdx.x < active)
-            tmp[threadIdx.x] += tmp[threadIdx.x + active];
+            tmp[threadIdx.y][threadIdx.x] += 
+                tmp[threadIdx.y][threadIdx.x + active];
         active /= 2;
+        
         __syncthreads();
+        
+        // The above __syncthreads() call could be replaced with a __syncwarp()
+        // call. The __syncwarp() function synchronizes the **warp**. This could
+        // potentially improve the performance as the warps do not have to wait
+        // each other.
+        // __syncwarp();    
     }
+    
+    // __syncthreads(); // needed with __syncwarp
 
-    if (threadIdx.x == 0)
-        y[thread_id] = tmp[0];
+    if (thread_id < m && threadIdx.y == 0)
+        y[thread_id] = tmp[threadIdx.x][0];
 }
 
 int main(int argc, char **argv)
@@ -150,9 +162,9 @@ int main(int argc, char **argv)
 
     // launch the kernel
     
-    dim3 threads(32, 32);
-    dim3 blocks(1, (m+threads.y-1)/threads.y);
-    size_t shared_size = threads.y*threads.x*sizeof(double);
+    dim3 threads(THREAD_BLOCK_SIZE, THREAD_BLOCK_SIZE);
+    dim3 blocks((m+THREAD_BLOCK_SIZE-1)/THREAD_BLOCK_SIZE, 1);
+    size_t shared_size = THREAD_BLOCK_SIZE*THREAD_BLOCK_SIZE*sizeof(double);
     gemv_kernel<<<blocks, threads, shared_size>>>(m, n, ld_dA, d_A, d_x, d_y);
     
     // copy the vector y from the device memory to the host memory
