@@ -72,7 +72,12 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     blocks. For now, use the `x` dimension for computations. Simply make sure
     that all threads that have `threadIdx.y != 0` skip the `if` block. Set the
     thread block size to `THREAD_BLOCK_SIZE x THREAD_BLOCK_SIZE`, where 
-    `THREAD_BLOCK_SIZE = 32`.
+    `THREAD_BLOCK_SIZE = 32`:
+
+    ```
+    // fix thread block dimensions so that blockDim.x = blockDim.y = warp size
+    #define THREAD_BLOCK_SIZE 32
+    ```
     
     Compile and test your modified program.
 
