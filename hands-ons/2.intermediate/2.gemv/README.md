@@ -26,13 +26,14 @@ matrix-vector multiplication. The goal is to learn about the shared memory etc.
     
     The program does the following:
      
-     - A random vector `A` and a random vector `x` are generated and moved to
-       the global memory.
+     - A random matrix `A` with `m` rows and `n` columns, and a random vector
+       `x` of length `n` are generated and moved to the global memory.
        
-     - A kernel `gemv_kernel` computes `y <- A * x` as follows:
+     - A kernel `gemv_kernel` computes a vector of length `m` as follows:
      
        ```
-       y_k = A_k0 * x_0 + A_k1 * x_1 + A_k2 * x_2 + ...
+       y   <- A * x <=>
+       y_k <- A_k0 * x_0 + A_k1 * x_1 + A_k2 * x_2 + ..., k = 0, ..., m-1.
        ```
        
      - The vector `y` is copied to the host memory and validated.
