@@ -74,7 +74,8 @@
      - the diagonal block is copied to a page locked memory buffer,
      
        ```
-       __host__​cudaError_t cudaMallocHost ( void** ptr, size_t size )
+       __host__ cudaError_t cudaMallocHost ( void** ptr, size_t size )
+       __host__ cudaError_t cudaFreeHost ( void* ptr )
         ```
      
      - call the `simple_lu` function (not the kernel) for the diagonal block,
