@@ -39,34 +39,35 @@
     The first program argument defines size of the matrix `A` and the second
     program argument defines the block size.
 
- 3. Copy the `blocked.cu` to a new file called `managed.cu`. Modify the program
-    such that the matrix `A` is allocated using managed memory. Align the
-    leading dimension (`ldA`) to 256 bytes (32 doubles).
+ 3. Copy the `blocked.cu` to a new file called `managed.cu`. Modify the
+    `managed.cu`program such that the matrix `A` is allocated using managed
+    memory. Align the leading dimension (`ldA`) to 256 bytes (32 doubles).
     
     Compile and test you modified program.
     
- 4. Modify the program such that is uses the cuBLAS library to perform the TRSM
-    and GEMM operations. You can use the CHECK_CUBLAS_ERROR macro for error
-    checking (see `common.h`). Also, see the earlier hands-on
+ 4. Modify the `managed.cu` program such that is uses the cuBLAS library to
+    perform the TRSM and GEMM operations. You can use the CHECK_CUBLAS_ERROR
+    macro for error checking (see `common.h`). Also, see the earlier hands-on
     [1.basics/4.managed](../../1.basics/4.managed).
     
     More information:
      - https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-trsm
      - https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-gemm
     
-    Remember to `cudaDeviceSynchronize()` before the host accesses any data. You
-    must do this in **two** different locations on the code.
+    Remember to call `cudaDeviceSynchronize()` before the host accesses any
+    data. You must do this in **two** different locations on the code.
     
     Compile and test you modified program. Write down your runtime.
 
- 5. Copy the `managed.cu` to a new file called `manual1.cu`. Modify the program
-    such that the matrix is allocated and transferred **without** using managed
-    memory. Turn the `simple_lu` function into a single-threaded kernel.
+ 5. Copy the `managed.cu` to a new file called `manual1.cu`. Modify the
+    `manual1.cu`program such that the matrix is allocated and transferred
+    **without** using managed memory. Turn the `simple_lu` function into a
+    single-threaded kernel.
     
     Compile and test you modified program. Write down your runtime.
 
- 6. Copy the `manual1.cu` to a new file called `manual2.cu`. Modify the program
-    such that
+ 6. Copy the `manual1.cu` to a new file called `manual2.cu`. Modify the
+    `manual2.cu` program such that
     
      - the diagonal block is copied to a page locked memory buffer,
      
