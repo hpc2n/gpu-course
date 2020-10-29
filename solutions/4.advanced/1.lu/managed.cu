@@ -187,7 +187,7 @@ int main(int argc, char **argv)
     cublasHandle_t handle;
     CHECK_CUBLAS_ERROR(cublasCreate(&handle));
 
-    double *A; int ldA = DIVCEIL(n, 32)*32; // align to 256 bytes
+    double *A; int ldA = n; // align to 256 bytes
     CHECK_CUDA_ERROR(cudaMallocManaged(&A, n*ldA*sizeof(double)));
     
     int ldB, ldC;

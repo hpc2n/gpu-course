@@ -9,19 +9,25 @@
  1. Carefully read through the `blocked.cu` file. Make sure that you have an
     idea of what each line of code does.
 
- 2. The program requires two arguments. Compile and run the program:
+ 2. Compile the program:
  
     ```
-    $ nvcc -o blocked blocked.cu ${LIBBLAS}
+    $ nvcc -o blocked blocked.cu ${LIBLAPACK} ${LIBBLAS}
+    ```
+    
+    The program requires two arguments. Run the program both sequentially and
+    in parallel:
+    
+    ```
     $ OMP_NUM_THREADS=1 srun ... ./blocked 10000 128
-    Time = 13.779339 s
+    Time = ....
     Residual = 5.888637E-16
     $ OMP_NUM_THREADS=14 srun ... ./blocked 10000 128
-    Time = 1.606935 s
+    Time = ....
     Residual = 5.815569E-16
     ```
     
-    Write down your runtime.
+    Write down your runtimes.
     
     The program does the following:
      
@@ -41,9 +47,9 @@
     The first program argument defines size of the matrix `A` and the second
     program argument defines the block size.
 
- 3. Copy the `blocked.cu` to a new file called `managed.cu`. Modify the
-    `managed.cu`program such that the matrix `A` is allocated using managed
-    memory. Align the leading dimension (`ldA`) to 256 bytes (32 doubles).
+ 3. Copy `blocked.cu` to a new file called `managed.cu`. Modify the `managed.cu`
+    program such that the matrix `A` is allocated using managed memory. Align
+    the leading dimension (`ldA`) to 256 bytes (32 doubles).
     
     Compile and test you modified program.
     
@@ -59,28 +65,36 @@
     Remember to call `cudaDeviceSynchronize()` before the host accesses any
     data. You must do this in **two** different locations on the code.
     
-    Compile and test you modified program. Write down your runtime.
+    Compile and test you modified program. Write down your runtime:
+    
+    ```
+    $ nvcc -o managed managed.cu -lcublas ${LIBLAPACK} ${LIBBLAS}
+    $ OMP_NUM_THREADS=14 srun ....
+    ```
 
- 5. Copy the `managed.cu` to a new file called `manual1.cu`. Modify the
-    `manual1.cu`program such that the matrix is allocated and transferred
-    **without** using managed memory. Turn the `simple_lu` function into a
-    single-threaded kernel.
+ 5. Copy `managed.cu` to a new file called `manual1.cu`. Modify the `manual1.cu`
+    program such that the matrix is allocated and transferred **without** using
+    managed memory. For now, turn the `simple_lu` function into a
+    single-threaded kernel. 
     
     Compile and test you modified program. Write down your runtime.
 
- 6. Copy the `manual1.cu` to a new file called `manual2.cu`. Modify the
-    `manual2.cu` program such that
+ 6. Copy `manual1.cu` to a new file called `manual2.cu`. Modify the `manual2.cu`
+    program such that
     
-     - the diagonal block is copied to a page locked memory buffer,
+     - each diagonal block is copied to a page-locked host memory buffer `T`,
      
        ```
        __host__ cudaError_t cudaMallocHost ( void** ptr, size_t size )
        __host__ cudaError_t cudaFreeHost ( void* ptr )
+       __host__ cudaError_t cudaMemcpy2D (
+           void* dst, size_t dpitch, const void* src, size_t spitch, 
+           size_t width, size_t height, cudaMemcpyKind kind )
         ```
      
-     - call the `simple_lu` function (not the kernel) for the diagonal block,
+     - the `simple_lu` function (not the kernel) is called for the buffer `T`,
        and
        
-     - copy the diagonal block back to global memory.
+     - the buffer `T` is copied back to the diagonal block.
     
     Compile and test you modified program. Write down your runtime.
