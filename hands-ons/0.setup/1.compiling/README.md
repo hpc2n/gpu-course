@@ -61,11 +61,12 @@
  4. During the course, you can use the course reservations (6 Nvidia V100 GPUs)
     to get faster access to the GPUs. The reservation `snic2020-9-161-day1` is
     valid during Wednesday and the reservation `snic2020-9-161-day2` is valid
-    during Thursday. The reservations are valid from 08:45 to 17:30. Jobs that
-    are submitted outside the reservation time window are not scheduled. You
-    can, however, submit jobs without the reservation as long as you are a
-    member of an active project. The project `SNIC2020-9-161` is valid longer
-    than the reservations.
+    during Thursday. The reservations are valid from 08:45 to 17:30. 
+
+    Note that jobs that are submitted using a reservation are not scheduled
+    outside the reservation time window. You can, however, submit jobs without
+    the reservation as long as you are a member of an active project. The
+    project `SNIC2020-9-161` is valid until 2020-12-01.
   
     Run the program:
  
