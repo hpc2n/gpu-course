@@ -114,6 +114,11 @@ int main(int argc, char **argv)
     CHECK_CUDA_ERROR(
         cudaMemcpy(d_x, x, n*sizeof(double), cudaMemcpyHostToDevice));
 
+    // start timer
+
+    struct timespec start, stop;
+    clock_gettime(CLOCK_REALTIME, &start);
+
     // launch the first kernel
     
     partial_sum_kernel<<<m, THREAD_BLOCK_SIZE>>>(n, d_x, d_y);
@@ -128,6 +133,13 @@ int main(int argc, char **argv)
     CHECK_CUDA_ERROR(
         cudaMemcpy(y, d_y, sizeof(double), cudaMemcpyDeviceToHost));
     double sum = y[0];
+
+    // stop timer
+
+    clock_gettime(CLOCK_REALTIME, &stop);
+    double time =
+        (stop.tv_sec - start.tv_sec) + (stop.tv_nsec - start.tv_nsec)*1E-9;
+    printf("Runtime was %f seconds.\n", time);
 
     // validate the result (Kahan)
     

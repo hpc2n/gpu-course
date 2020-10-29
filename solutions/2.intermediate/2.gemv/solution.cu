@@ -160,12 +160,26 @@ int main(int argc, char **argv)
     CHECK_CUDA_ERROR(
         cudaMemcpy(d_x, x, n*sizeof(double), cudaMemcpyHostToDevice));
 
+    // start timer
+
+    struct timespec start, stop;
+    clock_gettime(CLOCK_REALTIME, &start);
+
     // launch the kernel
     
     dim3 threads(THREAD_BLOCK_SIZE, THREAD_BLOCK_SIZE);
     dim3 blocks((m+THREAD_BLOCK_SIZE-1)/THREAD_BLOCK_SIZE, 1);
     gemv_kernel<<<blocks, threads>>>(m, n, ld_dA, d_A, d_x, d_y);
     
+    CHECK_CUDA_ERROR(cudaDeviceSynchronize());
+
+    // stop timer
+
+    clock_gettime(CLOCK_REALTIME, &stop);
+    double time =
+        (stop.tv_sec - start.tv_sec) + (stop.tv_nsec - start.tv_nsec)*1E-9;
+    printf("Runtime was %f seconds.\n", time);
+
     // copy the vector y from the device memory to the host memory
     
     CHECK_CUDA_ERROR(
