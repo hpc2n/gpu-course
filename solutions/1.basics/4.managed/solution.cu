@@ -52,8 +52,6 @@ int main(int argc, char const **argv)
             "[error] Failed to allocate host memory for vector _y.\n");
         return EXIT_FAILURE;
     }
-    
-    printf("%d %d\n", ((size_t)x) % 32, ((size_t)y) % 32);
 
     // initialize memory
 
