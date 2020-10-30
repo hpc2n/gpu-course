@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <cublas_v2.h>
+#include <cuda_profiler_api.h>
 #include "common.h"
 
 const double one = 1.0;
@@ -69,7 +70,7 @@ void blocked_lu(
 
         // calculate trailing matrix size
         int tsize = n-(i+1)*block_size;
-        
+
         //
         // compute the LU decomposition of the diagonal block
         //
@@ -100,9 +101,9 @@ void blocked_lu(
             // |  |  |  |  |
             // +--+--+--+--+
             //
-            cublasDtrsm(handle, CUBLAS_SIDE_LEFT, 
+            CHECK_CUBLAS_ERROR(cublasDtrsm(handle, CUBLAS_SIDE_LEFT, 
                 CUBLAS_FILL_MODE_LOWER, CUBLAS_OP_N, CUBLAS_DIAG_UNIT,
-                dsize, tsize, &one, blocks[i][i], ldA, blocks[i][i+1], ldA);
+                dsize, tsize, &one, blocks[i][i], ldA, blocks[i][i+1], ldA));
 
             //
             // blocks[i+1:][i] <- U(blocks[i][i]) / blocks[i+1:][i]
@@ -117,9 +118,9 @@ void blocked_lu(
             // |  |##|  |  |
             // +--+--+--+--+
             //
-            cublasDtrsm(handle, CUBLAS_SIDE_RIGHT,
+            CHECK_CUBLAS_ERROR(cublasDtrsm(handle, CUBLAS_SIDE_RIGHT,
                 CUBLAS_FILL_MODE_UPPER, CUBLAS_OP_N, CUBLAS_DIAG_NON_UNIT,
-                tsize, dsize, &one, blocks[i][i], ldA, blocks[i+1][i], ldA);
+                tsize, dsize, &one, blocks[i][i], ldA, blocks[i+1][i], ldA));
 
             //
             // blocks[i+1:][i+1:] <- blocks[i+1:][i+1:] -
@@ -135,14 +136,11 @@ void blocked_lu(
             // |  |rr|##|##|
             // +--+--+--+--+
             //
-            cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N,
+            CHECK_CUBLAS_ERROR(cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N,
                 tsize, tsize, dsize, &minus_one, blocks[i+1][i], ldA, 
-                blocks[i][i+1], ldA, &one, blocks[i+1][i+1], ldA);
+                blocks[i][i+1], ldA, &one, blocks[i+1][i+1], ldA));
         }
     }
-
-    // wait until all computation are ready
-    CHECK_CUDA_ERROR(cudaDeviceSynchronize());
     
     // free allocated resources
     for (int i = 0; i < block_count; i++)
@@ -183,10 +181,12 @@ int main(int argc, char **argv)
     
     cublasHandle_t handle;
     CHECK_CUBLAS_ERROR(cublasCreate(&handle));
+
+    double *A; int ldA = DIVCEIL(n, 32)*32; // align to 256 bytes
+    CHECK_CUDA_ERROR(cudaMallocManaged(&A, n*ldA*sizeof(double)));
     
-    int ldA, ldB, ldC;
-    ldA = ldB = ldC = DIVCEIL(n, 8)*8; // align to 64 bytes
-    double *A = (double *) aligned_alloc(8, n*ldA*sizeof(double));
+    int ldB, ldC;
+    ldB = ldC = DIVCEIL(n, 8)*8; // align to 64 bytes
     double *B = (double *) aligned_alloc(8, n*ldB*sizeof(double));
     double *C = (double *) aligned_alloc(8, n*ldC*sizeof(double));
     
@@ -195,14 +195,6 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    // allocate device memory
-    double *d_A; int ld_dA;
-    {
-        size_t pitch;
-        CHECK_CUDA_ERROR(cudaMallocPitch(&d_A, &pitch, n*sizeof(double), n));
-        ld_dA = pitch/sizeof(double);
-    }
-    
     // A <- random diagonally dominant matrix
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++)
@@ -216,23 +208,17 @@ int main(int argc, char **argv)
     
     struct timespec ts_start;
     clock_gettime(CLOCK_MONOTONIC, &ts_start);
-    
-    // A -> d_A
-    CHECK_CUDA_ERROR(
-        cudaMemcpy2D(d_A, ld_dA*sizeof(double), A, ldA*sizeof(double), 
-            n*sizeof(double), n, cudaMemcpyHostToDevice));
 
-    // d_A <- (L,U)
-    blocked_lu(handle, block_size, n, ld_dA, d_A);
+    cudaProfilerStart();
     
-    // d_A -> A
-    CHECK_CUDA_ERROR(
-        cudaMemcpy2D(A, ldA*sizeof(double), d_A, ld_dA*sizeof(double),
-            n*sizeof(double), n, cudaMemcpyDeviceToHost));
-
+    // A <- (L,U)
+    blocked_lu(handle, block_size, n, ldA, A);
+    CHECK_CUDA_ERROR(cudaDeviceSynchronize());
+    
+    cudaProfilerStop();
+    
     struct timespec ts_stop;
     clock_gettime(CLOCK_MONOTONIC, &ts_stop);
-
     printf("Time = %f s\n",
         ts_stop.tv_sec - ts_start.tv_sec +
         1.0E-9*(ts_stop.tv_nsec - ts_start.tv_nsec));
@@ -266,8 +252,7 @@ int main(int argc, char **argv)
     //
     
     CHECK_CUBLAS_ERROR(cublasDestroy(handle));
-    CHECK_CUDA_ERROR(cudaFree(d_A));
-    free(A);
+    CHECK_CUDA_ERROR(cudaFree(A));
     free(B);
     free(C);
 

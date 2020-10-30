@@ -2,12 +2,13 @@
 
 ## Objectives
 
- - Learn how to distribute computations to both the host and the device.
+ - Learn what type of computations are suitable for GPUs and which are not.
 
 ## Instructions
 
- 1. Carefully read through the `blocked.cu` file. Make sure that you have an
-    idea of what each line of code does.
+ 1. Read through the `blocked.cu` file. Make sure that you have an overall idea
+    of what the code does. There is **no need** to understand the algorithmic
+    details.
 
  2. Compile the program:
  
@@ -49,12 +50,13 @@
 
  3. Copy `blocked.cu` to a new file called `managed.cu`. Modify the `managed.cu`
     program such that the matrix `A` is allocated using managed memory. Align
-    the leading dimension (`ldA`) to 256 bytes (32 doubles).
+    the leading dimension (`ldA`) to 256 bytes (32 doubles). You can use the
+    `CHECK_CUDA_ERROR` macro for error checking (see `common.h`).
     
     Compile and test you modified program.
     
  4. Modify the `managed.cu` program such that is uses the cuBLAS library to
-    perform the TRSM and GEMM operations. You can use the CHECK_CUBLAS_ERROR
+    perform the TRSM and GEMM operations. You can use the `CHECK_CUBLAS_ERROR`
     macro for error checking (see `common.h`). Also, see the earlier hands-on
     [1.basics/4.managed](../../1.basics/4.managed).
     
@@ -72,29 +74,34 @@
     $ OMP_NUM_THREADS=14 srun ....
     ```
 
- 5. Copy `managed.cu` to a new file called `manual1.cu`. Modify the `manual1.cu`
-    program such that the matrix is allocated and transferred **without** using
-    managed memory. For now, turn the `simple_lu` function into a
-    single-threaded kernel. 
+ 5. Copy `managed.cu` to a new file called `gpu_only.cu`. Modify the
+    `gpu_only.cu` program such that the `simple_lu` function is executed as a
+    single-threaded kernel on the device.
     
     Compile and test you modified program. Write down your runtime.
 
- 6. Copy `manual1.cu` to a new file called `manual2.cu`. Modify the `manual2.cu`
-    program such that
+ 6. Modify both `managed.cu` and `gpu_only.cu` such that profiling is started
+    just before the `blocked_lu` function call and stopped after the function
+    call and a synchronisation.
     
-     - each diagonal block is copied to a page-locked host memory buffer `T`,
-     
-       ```
-       __host__ cudaError_t cudaMallocHost ( void** ptr, size_t size )
-       __host__ cudaError_t cudaFreeHost ( void* ptr )
-       __host__ cudaError_t cudaMemcpy2D (
-           void* dst, size_t dpitch, const void* src, size_t spitch, 
-           size_t width, size_t height, cudaMemcpyKind kind )
-        ```
-     
-     - the `simple_lu` function (not the kernel) is called for the buffer `T`,
-       and
-       
-     - the buffer `T` is copied back to the diagonal block.
+    Include the `cuda_profiler_api.h` header and use the following functions:
     
-    Compile and test you modified program. Write down your runtime.
+    ```
+    void cudaProfilerStart ( void )
+    void cudaProfilerStop ( void )
+    ```
+
+    Use the `nvprof` profiler to analyse both programs:
+    
+    ```
+    $ srun ... nvprof --unified-memory-profiling off --dependency-analysis ./managed 10000 128
+    $ srun ... nvprof --unified-memory-profiling off --dependency-analysis ./gpu_only 10000 128
+    ```
+    
+    Note that the unified memory profiling needs to be disabled for now. Also,
+    when the profiling is started manually, one should use the
+    `--profile-from-start off` option. However, in this simple example, it can
+    actually cause an error.
+    
+    Compare the "Profiling result" and "Dependency Analysis" sections. What
+    can you conclude?
