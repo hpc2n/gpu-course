@@ -94,14 +94,10 @@
     Use the `nvprof` profiler to analyse both programs:
     
     ```
-    $ srun ... nvprof --unified-memory-profiling off --dependency-analysis ./managed 10000 128
-    $ srun ... nvprof --unified-memory-profiling off --dependency-analysis ./gpu_only 10000 128
+    $ srun ... nvprof --unified-memory-profiling off ./managed 10000 128
+    $ srun ... nvprof --unified-memory-profiling off ./gpu_only 10000 128
     ```
     
-    Note that the unified memory profiling needs to be disabled for now. Also,
-    when the profiling is started manually, one should use the
-    `--profile-from-start off` option. However, in this simple example, it can
-    actually cause an error.
+    Note that the unified memory profiling needs to be disabled for now.
     
-    Compare the "Profiling result" and "Dependency Analysis" sections. What
-    can you conclude?
+    Compare the "Profiling result" sections. What can you conclude?
