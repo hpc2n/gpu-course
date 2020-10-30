@@ -1,40 +1,24 @@
-==941045== NVPROF is profiling process 941045, command: ./gpu_only 10000 128
-==941045== Profiling application: ./gpu_only 10000 128
-Time = 3.249936 s
-Residual = 5.750610E-16
-==941045== Profiling result:
+$ run_gpu nvprof --unified-memory-profiling off --profile-from-start off ./gpu_only 10000 128
+srun: job 10432159 queued and waiting for resources
+srun: job 10432159 has been allocated resources
+==941678== NVPROF is profiling process 941678, command: ./gpu_only 10000 128
+==941678== Profiling application: ./gpu_only 10000 128
+Time = 3.434807 s
+Residual = 5.818241E-16
+==941678== Profiling result:
             Type  Time(%)      Time     Calls       Avg       Min       Max  Name
- GPU activities:   93.01%  3.01632s        79  38.181ms  87.040us  43.816ms  simple_lu(int, int, double*)
-                    3.32%  107.75ms        48  2.2449ms  686.01us  4.5229ms  volta_dgemm_128x64_nn
-                    3.10%  100.67ms        38  2.6492ms  86.464us  96.322ms  void kernel_trsm_l_mul32<double, int=8, bool=0, bool=0, bool=0, bool=1>(int, int, double const *, double const *, int, double*, int, double, int)
-                    0.29%  9.4632ms        80  118.29us  21.568us  700.96us  volta_dgemm_64x64_nn
-                    0.19%  6.3191ms       156  40.506us  18.752us  75.104us  void trsm_right_kernel<double, int=256, int=4, bool=1, bool=0, bool=0, bool=1, bool=0>(cublasTrsmParams<double>, double, double const *, int)
-                    0.05%  1.5815ms        78  20.275us  11.648us  30.336us  void trsm_left_kernel<double, int=256, int=4, bool=1, bool=0, bool=0, bool=0, bool=1>(cublasTrsmParams<double>, double, double const *, int)
-                    0.02%  679.01us        66  10.287us  4.1920us  17.631us  void gemm_kernel2x2_tile_multiple_core<double, bool=1, bool=0, bool=0, bool=0, bool=0>(double*, double const *, double const *, int, int, int, int, int, int, double*, double*, double, double, int)
-                    0.00%  60.608us         1  60.608us  60.608us  60.608us  void trsm_ln_kernel<double, unsigned int=32, unsigned int=32, unsigned int=4, bool=1>(int, int, double const *, int, double*, int, double, double const *, int, int*)
-                    0.00%  6.7200us         1  6.7200us  6.7200us  6.7200us  void gemmSN_NN_kernel<double, int=128, int=2, int=4, int=8, int=4, int=4, cublasGemvTensorStridedBatched<double const >, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<double const , cublasGemvTensorStridedBatched<double const >, double>)
-                    0.00%  1.5360us         1  1.5360us  1.5360us  1.5360us  [CUDA memcpy HtoD]
-                    0.00%  1.2800us         1  1.2800us  1.2800us  1.2800us  dtrsv_init(int*)
-      API calls:   81.18%  3.23964s         1  3.23964s  3.23964s  3.23964s  cudaDeviceSynchronize
-                   18.61%  742.89ms         3  247.63ms     737ns  530.14ms  cudaFree
-                    0.08%  3.2203ms       548  5.8760us  4.8760us  91.971us  cudaLaunchKernel
-                    0.07%  2.8656ms         1  2.8656ms  2.8656ms  2.8656ms  cudaMallocManaged
-                    0.02%  983.83us         3  327.94us  318.01us  336.78us  cuDeviceTotalMem
-                    0.02%  747.49us       285  2.6220us     116ns  99.148us  cuDeviceGetAttribute
-                    0.01%  206.14us         3  68.714us  4.8430us  186.91us  cudaMalloc
-                    0.00%  108.21us       702     154ns      95ns  6.7330us  cudaGetLastError
-                    0.00%  91.028us         3  30.342us  20.618us  38.387us  cuDeviceGetName
-                    0.00%  43.263us        90     480ns     360ns  2.6500us  cudaFuncSetAttribute
-                    0.00%  35.432us         1  35.432us  35.432us  35.432us  cudaProfilerStart
-                    0.00%  18.947us         1  18.947us  18.947us  18.947us  cudaEventQuery
-                    0.00%  18.884us         1  18.884us  18.884us  18.884us  cudaMemcpy
-                    0.00%  9.1020us        16     568ns     401ns  2.5830us  cudaEventCreateWithFlags
-                    0.00%  5.1520us        11     468ns     246ns  1.5970us  cudaDeviceGetAttribute
-                    0.00%  2.5880us         1  2.5880us  2.5880us  2.5880us  cuDeviceGetPCIBusId
-                    0.00%  2.1230us         1  2.1230us  2.1230us  2.1230us  cudaEventRecord
-                    0.00%  1.8750us         4     468ns     302ns     713ns  cuDeviceGetCount
-                    0.00%  1.7000us         2     850ns     776ns     924ns  cuInit
-                    0.00%  1.5660us         4     391ns     156ns     718ns  cuDeviceGet
-                    0.00%  1.5650us         1  1.5650us  1.5650us  1.5650us  cudaGetDevice
-                    0.00%  1.2630us         2     631ns     594ns     669ns  cuDriverGetVersion
-                    0.00%     661ns         3     220ns     210ns     237ns  cuDeviceGetUuid
+ GPU activities:   93.06%  3.01804s        79  38.203ms  87.071us  43.778ms  simple_lu(int, int, double*)
+                    3.33%  107.86ms        48  2.2471ms  689.47us  4.5173ms  volta_dgemm_128x64_nn
+                    3.05%  98.954ms        38  2.6041ms  86.815us  94.595ms  void kernel_trsm_l_mul32<double, int=8, bool=0, bool=0, bool=0, bool=1>(int, int, double const *, double const *, int, double*, int, double, int)
+                    0.29%  9.4531ms        80  118.16us  21.504us  694.30us  volta_dgemm_64x64_nn
+                    0.19%  6.3145ms       156  40.477us  18.784us  75.871us  void trsm_right_kernel<double, int=256, int=4, bool=1, bool=0, bool=0, bool=1, bool=0>(cublasTrsmParams<double>, double, double const *, int)
+                    0.05%  1.5810ms        78  20.269us  11.616us  30.784us  void trsm_left_kernel<double, int=256, int=4, bool=1, bool=0, bool=0, bool=0, bool=1>(cublasTrsmParams<double>, double, double const *, int)
+                    0.02%  676.09us        66  10.243us  4.1600us  18.336us  void gemm_kernel2x2_tile_multiple_core<double, bool=1, bool=0, bool=0, bool=0, bool=0>(double*, double const *, double const *, int, int, int, int, int, int, double*, double*, double, double, int)
+                    0.00%  60.735us         1  60.735us  60.735us  60.735us  void trsm_ln_kernel<double, unsigned int=32, unsigned int=32, unsigned int=4, bool=1>(int, int, double const *, int, double*, int, double, double const *, int, int*)
+                    0.00%  6.6560us         1  6.6560us  6.6560us  6.6560us  void gemmSN_NN_kernel<double, int=128, int=2, int=4, int=8, int=4, int=4, cublasGemvTensorStridedBatched<double const >, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<double const , cublasGemvTensorStridedBatched<double const >, double>)
+                    0.00%  1.3760us         1  1.3760us  1.3760us  1.3760us  dtrsv_init(int*)
+      API calls:   94.47%  3.23996s         1  3.23996s  3.23996s  3.23996s  cudaDeviceSynchronize
+                    5.52%  189.48ms       548  345.76us  4.6360us  186.57ms  cudaLaunchKernel
+                    0.00%  92.027us       702     131ns      89ns  1.5510us  cudaGetLastError
+                    0.00%  5.3560us         1  5.3560us  5.3560us  5.3560us  cudaEventQuery
+                    0.00%  2.1880us         1  2.1880us  2.1880us  2.1880us  cudaEventRecord
