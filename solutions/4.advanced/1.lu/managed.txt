@@ -1,0 +1,39 @@
+=940873== NVPROF is profiling process 940873, command: ./managed 10000 128
+==940873== Profiling application: ./managed 10000 128
+Time = 0.762581 s
+Residual = 5.811044E-16
+==940873== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   45.24%  173.81ms        38  4.5740ms  1.8516ms  99.691ms  void kernel_trsm_l_mul32<double, int=8, bool=0, bool=0, bool=0, bool=1>(int, int, double const *, double const *, int, double*, int, double, int)
+                   28.22%  108.41ms        48  2.2586ms  686.65us  4.5006ms  volta_dgemm_128x64_nn
+                   21.91%  84.172ms        78  1.0791ms  831.13us  1.2899ms  void trsm_left_kernel<double, int=256, int=4, bool=1, bool=0, bool=0, bool=0, bool=1>(cublasTrsmParams<double>, double, double const *, int)
+                    2.47%  9.4877ms        80  118.60us  20.992us  686.68us  volta_dgemm_64x64_nn
+                    1.68%  6.4587ms       156  41.402us  19.007us  75.072us  void trsm_right_kernel<double, int=256, int=4, bool=1, bool=0, bool=0, bool=1, bool=0>(cublasTrsmParams<double>, double, double const *, int)
+                    0.29%  1.1145ms         1  1.1145ms  1.1145ms  1.1145ms  void trsm_ln_kernel<double, unsigned int=32, unsigned int=32, unsigned int=4, bool=1>(int, int, double const *, int, double*, int, double, double const *, int, int*)
+                    0.18%  709.82us        66  10.754us  4.9920us  18.432us  void gemm_kernel2x2_tile_multiple_core<double, bool=1, bool=0, bool=0, bool=0, bool=0>(double*, double const *, double const *, int, int, int, int, int, int, double*, double*, double, double, int)
+                    0.00%  7.5520us         1  7.5520us  7.5520us  7.5520us  void gemmSN_NN_kernel<double, int=128, int=2, int=4, int=8, int=4, int=4, cublasGemvTensorStridedBatched<double const >, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<double const , cublasGemvTensorStridedBatched<double const >, double>)
+                    0.00%  1.8880us         1  1.8880us  1.8880us  1.8880us  dtrsv_init(int*)
+                    0.00%  1.4720us         1  1.4720us  1.4720us  1.4720us  [CUDA memcpy HtoD]
+      API calls:   65.78%  751.19ms         3  250.40ms     835ns  534.55ms  cudaFree
+                   33.46%  382.09ms        81  4.7171ms  1.8260us  104.26ms  cudaDeviceSynchronize
+                    0.29%  3.3545ms       469  7.1520us  4.8110us  87.033us  cudaLaunchKernel
+                    0.26%  2.9850ms         1  2.9850ms  2.9850ms  2.9850ms  cudaMallocManaged
+                    0.09%  984.25us         3  328.08us  318.21us  339.00us  cuDeviceTotalMem
+                    0.07%  795.61us       285  2.7910us     122ns  110.30us  cuDeviceGetAttribute
+                    0.02%  212.44us         3  70.812us  4.5560us  194.32us  cudaMalloc
+                    0.01%  103.74us       702     147ns      97ns  4.7720us  cudaGetLastError
+                    0.01%  95.990us         3  31.996us  20.725us  41.671us  cuDeviceGetName
+                    0.00%  44.584us        90     495ns     331ns  2.6140us  cudaFuncSetAttribute
+                    0.00%  18.162us         1  18.162us  18.162us  18.162us  cudaMemcpy
+                    0.00%  11.913us        16     744ns     418ns  5.1720us  cudaEventCreateWithFlags
+                    0.00%  11.042us         1  11.042us  11.042us  11.042us  cudaProfilerStart
+                    0.00%  5.2860us        11     480ns     264ns  1.6250us  cudaDeviceGetAttribute
+                    0.00%  3.6340us         1  3.6340us  3.6340us  3.6340us  cudaEventQuery
+                    0.00%  2.5810us         1  2.5810us  2.5810us  2.5810us  cuDeviceGetPCIBusId
+                    0.00%  2.4940us         1  2.4940us  2.4940us  2.4940us  cudaEventRecord
+                    0.00%  1.8940us         4     473ns     358ns     770ns  cuDeviceGetCount
+                    0.00%  1.8280us         2     914ns     848ns     980ns  cuInit
+                    0.00%  1.7980us         1  1.7980us  1.7980us  1.7980us  cudaGetDevice
+                    0.00%  1.5650us         4     391ns     173ns     797ns  cuDeviceGet
+                    0.00%  1.3770us         2     688ns     605ns     772ns  cuDriverGetVersion
+                    0.00%     639ns         3     213ns     196ns     226ns  cuDeviceGetUuid
