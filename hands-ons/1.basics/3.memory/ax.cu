@@ -85,8 +85,8 @@ int main(int argc, char const **argv)
 
     // launch the kernel
 
-    dim3 threads = 128;
-    dim3 blocks = max(1, min(64, n/threads.x));
+    dim3 threads = 256;
+    dim3 blocks = max(1, min(256, n/threads.x));
     ax_kernel<<<blocks, threads>>>(n, alpha, d_y);
 
     CHECK_CUDA_ERROR(cudaGetLastError());
