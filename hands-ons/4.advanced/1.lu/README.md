@@ -94,8 +94,8 @@
     Use the `nvprof` profiler to analyse both programs:
     
     ```
-    $ srun ... nvprof --unified-memory-profiling off ./managed 10000 128
-    $ srun ... nvprof --unified-memory-profiling off ./gpu_only 10000 128
+    $ srun ... nvprof --unified-memory-profiling off --profile-from-start off ./managed 10000 128
+    $ srun ... nvprof --unified-memory-profiling off --profile-from-start off ./gpu_only 10000 128
     ```
     
     Note that the unified memory profiling needs to be disabled for now.
