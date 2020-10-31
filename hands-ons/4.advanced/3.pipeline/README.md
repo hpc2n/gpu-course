@@ -20,10 +20,10 @@ reasons.
  2. The program requires three arguments. Compile and run the program:
  
     ```
-    $ nvcc -o pipeline pipeline.cu ${LIBBLAS}
-    $ srun ... ./pipeline 2000 20000 2000
-    Runtime was 3.331 s.
-    Max error = 0.000000e+00
+    $ nvcc -o pipeline pipeline.cu -lcublas
+    $ srun ... ./pipeline 3000 30000 3000
+    Runtime was 0.118 s.
+    Max error = 0.000000e+00.
     ```
     
     The program does the following:
