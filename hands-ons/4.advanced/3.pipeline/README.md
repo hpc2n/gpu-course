@@ -72,7 +72,7 @@ reasons.
     
      - Modify the main `for` loop thus that during the first iteration the
        variable `stream` points to the stream `stream1`. Also, set the pointers
-       `_B` and `_C` to point to `_B1` and `_C2`, respectively.
+       `_B` and `_C` to point to `_B1` and `_C1`, respectively.
     
      - Swap `stream`, `_B` and `_C` after each iteration. That is (`stream`,
        `_B`, `_C`) should alternate between (`stream1`, `_B1`, `_C1`) and
