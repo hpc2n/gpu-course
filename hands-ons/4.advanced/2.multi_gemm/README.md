@@ -58,7 +58,7 @@ initialized as a permutation matrix for space and time saving reasons.
        ```
     
     Since the streams operate independently from each other, computations and
-    transfers from one stream can overlap with the computation and transfers
+    transfers from one stream can overlap with the computations and transfers
     from the other stream.
     
     Compile and test your modified program
