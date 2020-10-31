@@ -12,11 +12,11 @@
     }                                               \
 }
 
-// a kernel that compute the AXPY operation
+// a kernel that computes the AXPY operation
 __global__ void axpy_kernel(int n, double alpha, double *x, double *y)
 {
     //
-    // Each thread is going to begin from the array element that matches it's
+    // Each thread is going to begin from the array element that matches its
     // global index number. For blockDim.x = 4, gridDim.x 2, we have:
     // threadIdx.x : 0 1 2 3 0 1 2 3
     // blockIdx.x  : 0 0 0 0 1 1 1 1
