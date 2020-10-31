@@ -86,4 +86,4 @@
     is incorrect (the residual is very large). Why? **Fix the problem.**
     
     Hint: Is some familiar command missing? Compare to
-    [hello.cu](../../1.basic/1.threads/hello.cu).
+    [hello.cu](../../1.basics/1.threads/hello.cu).
