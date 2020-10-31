@@ -57,9 +57,9 @@ initialized as a permutation matrix for space and time saving reasons.
        cublasStatus_t cublasSetStream(cublasHandle_t handle, cudaStream_t streamId)
        ```
     
-    Since the two stream operate independently from each other, computations and
-    transfers from one stream can overlap with the computation and transfers from
-    the other stream.
+    Since the streams operate independently from each other, computations and
+    transfers from one stream can overlap with the computation and transfers
+    from the other stream.
     
     Compile and test your modified program
 
