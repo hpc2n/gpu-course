@@ -71,14 +71,14 @@ reasons.
        all buffers.
     
      - Modify the main `for` loop thus that during the first iteration the
-       variable `stream` point to the stream `stream1`. Also, set the pointers
+       variable `stream` points to the stream `stream1`. Also, set the pointers
        `_B` and `_C` to point to `_B1` and `_C2`, respectively.
     
      - Swap `stream`, `_B` and `_C` after each iteration. That is (`stream`,
        `_B`, `_C`) should alternate between (`stream1`, `_B1`, `_C1`) and
        (`stream2`, `_B2`, `_C2`).
     
-    Since the two stream operate independently from each other, computations and
+    Since the two streams operate independently from each other, computations and
     transfers from one stream can overlap with the computation and transfers from
     the other stream.
     
