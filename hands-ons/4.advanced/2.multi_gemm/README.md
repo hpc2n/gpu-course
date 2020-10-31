@@ -42,7 +42,7 @@ initialized as a permutation matrix for space and time saving reasons.
  3. Modify the program as follows:
  
      - Create a stream for each triplet in the set `{(A, B, C)}}`. Remember
-       to destroy all stream.
+       to destroy all streams.
      
      - Pin the buffers `A[i]`, `B[i]`, `C[i]`, `i = 0, ..., count-1`, to the
        host memory. Remember to unpin the memory.
