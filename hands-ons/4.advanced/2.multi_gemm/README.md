@@ -21,7 +21,7 @@ initialized as a permutation matrix for space and time saving reasons.
     ```
     $ nvcc -o gemms gemms.cu -lcublas
     $ srun ... ./gemms 1000 50
-    Runtime was X.XXXXXXs.
+    Runtime was 0.644 s.
     Max error = 0.000000e+00
     ```
     
