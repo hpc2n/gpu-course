@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include <cblas.h>
+#include <cublas_v2.h>
 
 #define CHECK_CUDA_ERROR(exp) {                     \
     cudaError_t ret = (exp);                        \
@@ -72,8 +72,21 @@ int main(int argc, char const **argv)
     // initialization
     //
     
+    // initialize the random number generator
+    
     srand(time(NULL));
-
+    
+    // initialize cuBLAS
+    
+    cublasHandle_t handle;
+    CHECK_CUBLAS_ERROR(cublasCreate(&handle));
+    
+    // create stream
+    
+    cudaStream_t stream1, stream2;
+    CHECK_CUDA_ERROR(cudaStreamCreate(&stream1));
+    CHECK_CUDA_ERROR(cudaStreamCreate(&stream2));
+    
     //
     // allocate memory for a matrix-matrix multiplication
     //
@@ -85,16 +98,34 @@ int main(int argc, char const **argv)
     //
     
     int ldA, ldB, ldC;
-    ldA = ldB = ldC = DIVCEIL(m, 8)*8; // align to 64 bytes
-    double *A = (double *) aligned_alloc(8, m*ldA*sizeof(double));
-    double *B = (double *) aligned_alloc(8, n*ldB*sizeof(double));
-    double *C = (double *) aligned_alloc(8, n*ldC*sizeof(double));
+    ldA = ldB = ldC = DIVCEIL(m, 32)*32; // align to 256 bytes
+    double *A = (double *) aligned_alloc(32, m*ldA*sizeof(double));
+    double *B = (double *) aligned_alloc(32, n*ldB*sizeof(double));
+    double *C = (double *) aligned_alloc(32, n*ldC*sizeof(double));
     
     if (A == NULL || B == NULL || C == NULL) {
         fprintf(stderr, "[error] Failed to allocate memory.\n");
         return EXIT_FAILURE;
     }
+    
+    // pin matrices A, B and C to the host memory
+    
+    CHECK_CUDA_ERROR(
+        cudaHostRegister(A, m*ldA*sizeof(double), cudaHostRegisterDefault));
+    CHECK_CUDA_ERROR(
+        cudaHostRegister(B, n*ldB*sizeof(double), cudaHostRegisterDefault));
+    CHECK_CUDA_ERROR(
+        cudaHostRegister(C, n*ldC*sizeof(double), cudaHostRegisterDefault));
+    
+    // allocate device memory
 
+    double *_A, *_B1, *_B2, *_C1, *_C2;
+    CHECK_CUDA_ERROR(cudaMalloc(&_A, n*ldA*sizeof(double)));
+    CHECK_CUDA_ERROR(cudaMalloc(&_B1, splice*ldB*sizeof(double)));
+    CHECK_CUDA_ERROR(cudaMalloc(&_B2, splice*ldB*sizeof(double)));
+    CHECK_CUDA_ERROR(cudaMalloc(&_C1, splice*ldC*sizeof(double)));
+    CHECK_CUDA_ERROR(cudaMalloc(&_C2, splice*ldC*sizeof(double)));
+    
     //
     // initialize the matrices A and B
     //
@@ -145,26 +176,70 @@ int main(int argc, char const **argv)
     //   <------- n ------->
     //
     
+    // set currently active stream and buffers
+    
+    cudaStream_t stream = stream1;
+    double *_B = _B1;
+    double *_C = _C1;
+    
+    // copy the matrix A to the global memory
+    
+    CHECK_CUDA_ERROR(
+        cudaMemcpy(_A, A, m*ldA*sizeof(double), cudaMemcpyHostToDevice));
+
     // splice the matrices B and C horizontally into m-by-splice sub-matrices
     for (int i = 0; i < n; i+= splice) {
         
         // the width of the spliced sub-matrix pair
+        
         int splice_width = min(splice, n-i);
         
+        // _B <- corresponding slice from the matrix B
+        
+        CHECK_CUDA_ERROR(
+            cudaMemcpyAsync(_B, B+i*ldB, splice_width*ldB*sizeof(double),
+                cudaMemcpyHostToDevice, stream));
+        
+        // set CUDA stream for the cuBLAS call
+        
+        CHECK_CUBLAS_ERROR(cublasSetStream(handle, stream));
+        
         // multiply each pair of sub-matrices
-        //            C               A            B
+        //          _C                A          _B
         //   +-----------------+    +---+ +-----------------+
         // m |  :  :##:  :  :  | <- |###| |  :  :##:  :  :  |
         //   +-----------------+    +---+ +-----------------+ 
         //         ^-- i                        ^-- i
         
-        cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans,
-            m, splice_width, m, 1.0, A, ldA, B+i*ldB, ldB, 0.0, C+i*ldC, ldC);
+        double one = 1.0, zero = 0.0;
+        CHECK_CUBLAS_ERROR(cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N,
+            m, splice_width, m, &one, _A, ldA, _B, ldB, &zero, _C, ldC));
+        
+        // copy _C to the corresponding slice of the matrix C
+        
+        CHECK_CUDA_ERROR(
+            cudaMemcpyAsync(C+i*ldC, _C, splice_width*ldC*sizeof(double),
+                cudaMemcpyDeviceToHost, stream));
+        
+        // swap the streams and buffers
+        
+        if (stream == stream1) {
+            stream = stream2;
+            _B = _B2;
+            _C = _C2;
+        }
+        else {
+            stream = stream1;
+            _B = _B1;
+            _C = _C1;
+        }
     }
     
     //
-    // stop the timer
+    // wait until the device is ready and stop the timer
     //
+ 
+    CHECK_CUDA_ERROR(cudaDeviceSynchronize());
     
     struct timespec ts_stop;
     clock_gettime(CLOCK_MONOTONIC, &ts_stop);
@@ -183,8 +258,29 @@ int main(int argc, char const **argv)
             max_error = max(max_error, fabs(C[i*ldC+j] - B[i*ldB+p[j]]));
     printf("Max error = %e.\n", max_error);
 
+    // shutdown cuBLAS
+    CHECK_CUBLAS_ERROR(cublasDestroy(handle));
+    
+    // destroy the streams
+    
+    CHECK_CUDA_ERROR(cudaStreamDestroy(stream1));
+    CHECK_CUDA_ERROR(cudaStreamDestroy(stream2));
+    
+    // un-pin the matrices A, B and C
+    
+    CHECK_CUDA_ERROR(cudaHostUnregister(A));
+    CHECK_CUDA_ERROR(cudaHostUnregister(B));
+    CHECK_CUDA_ERROR(cudaHostUnregister(C));
+    
+    // free device memory
+    CHECK_CUDA_ERROR(cudaFree(_A));
+    CHECK_CUDA_ERROR(cudaFree(_B1));
+    CHECK_CUDA_ERROR(cudaFree(_B2));
+    CHECK_CUDA_ERROR(cudaFree(_C1));
+    CHECK_CUDA_ERROR(cudaFree(_C2));
+    
     // free the allocated memory
-
+    
     free(A); free(B); free(C); free(p);
 
     return EXIT_SUCCESS;
