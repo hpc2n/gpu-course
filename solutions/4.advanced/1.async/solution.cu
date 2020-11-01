@@ -100,8 +100,9 @@ int main(int argc, char const **argv)
     
     // start timer
     
-    struct timespec start, stop;
-    clock_gettime(CLOCK_REALTIME, &start);
+    cudaEvent_t start;
+    CHECK_CUDA_ERROR(cudaEventCreate(&start));
+    CHECK_CUDA_ERROR(cudaEventRecord (start, stream));
 
     // copy the vector from the host memory to the device memory
 
@@ -125,18 +126,21 @@ int main(int argc, char const **argv)
     CHECK_CUDA_ERROR(
         cudaMemcpyAsync(
             y, d_y, n*sizeof(double), cudaMemcpyDeviceToHost, stream));
+
+    // stop timer
+
+    cudaEvent_t stop;
+    CHECK_CUDA_ERROR(cudaEventCreate(&stop));
+    CHECK_CUDA_ERROR(cudaEventRecord (stop, stream));
     
     // wait until the stream is empty
     CHECK_CUDA_ERROR(cudaStreamSynchronize(stream));
     
-    // stop timer
+    // report run time
     
-    clock_gettime(CLOCK_REALTIME, &stop);
-
-    double time =
-        (stop.tv_sec - start.tv_sec) + (stop.tv_nsec - start.tv_nsec)*1E-9;
-
-    printf("Runtime was %f seconds.\n", time);
+    float time;
+    CHECK_CUDA_ERROR(cudaEventElapsedTime(&time, start, stop));
+    printf("Runtime was %f seconds.\n", 1E-3*time);
 
     // validate the result by computing sqrt((x-alpha*_x)^2)
 
@@ -151,6 +155,8 @@ int main(int argc, char const **argv)
     // free the allocated memory
 
     free(x), free(y); free(_y);
+    CHECK_CUDA_ERROR(cudaEventDestroy (start));
+    CHECK_CUDA_ERROR(cudaEventDestroy (stop));
     CHECK_CUDA_ERROR(cudaFree(d_x));
     CHECK_CUDA_ERROR(cudaFree(d_y));
 }

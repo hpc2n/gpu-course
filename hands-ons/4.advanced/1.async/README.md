@@ -1,9 +1,10 @@
-# Streams and asynchronous data transfers
+# Streams, asynchronous data transfers and events
 
 ## Objectives
 
  - Learn how to use streams
  - Learn how to use asynchronous data transfers
+ - Learn how to use events
 
 ## Instructions
 
@@ -50,4 +51,17 @@
     __host__ cudaError_t cudaStreamSynchronize ( cudaStream_t stream )
     ```
     
+    Compile and run your modified program.
+
+ 7. Measure the run time using events:
+
+    ```
+    __host__ cudaError_t cudaEventCreate ( cudaEvent_t* event )
+    __host__ __device__ cudaError_t cudaEventDestroy ( cudaEvent_t event )
+    __host__ __device__ cudaError_t cudaEventRecord (
+        cudaEvent_t event, cudaStream_t stream = 0 )
+    __host__ cudaError_t cudaEventElapsedTime (
+        float* ms, cudaEvent_t start, cudaEvent_t end )
+    ```
+
     Compile and run your modified program.
