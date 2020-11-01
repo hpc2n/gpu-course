@@ -73,4 +73,10 @@
        cublasStatus_t cublasDestroy(cublasHandle_t handle)
        ```
 
+     - Link your program with cuBLAS:
+     
+       ```
+       $ nvcc -o cublas_axpy cublas_axpy.cu -lcublas
+       ```
+
     More information: https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-axpy
