@@ -57,8 +57,7 @@
     
  4. Modify the `managed.cu` program such that is uses the cuBLAS library to
     perform the TRSM and GEMM operations. You can use the `CHECK_CUBLAS_ERROR`
-    macro for error checking (see `common.h`). Also, see the earlier hands-on
-    [2.intermediate/1.managed](../../2.intermediate/1.managed).
+    macro for error checking (see `common.h`).
     
     More information:
      - https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-trsm
