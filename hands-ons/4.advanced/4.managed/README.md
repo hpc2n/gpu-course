@@ -33,7 +33,7 @@
     Compile and test the program.
 
  4. Modify the program such that is uses the cuBLAS library to perform the AXPY
-    operation. You can use the `CHECK_CUBLAS_ERROR` macro for error checking.
+    operation:
     
     Steps:
     
@@ -72,18 +72,5 @@
        ```
        cublasStatus_t cublasDestroy(cublasHandle_t handle)
        ```
-    
- 5. Please pay close attention to this last step. Compile and test the program
-    (note the argument `-lcublas`):
-    
-    ```
-    $ nvcc -o axpy axpy.cu -lcublas
-    $ srun ... ./axpy 10000
-    Residual = 1.159904e+02
-    ```
-    
-    The program should compile and run without any errors. However, the result
-    is incorrect (the residual is very large). Why? **Fix the problem.**
-    
-    Hint: Is some familiar command missing? Compare to
-    [hello.cu](../../1.basics/1.threads/hello.cu).
+
+    More information: https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-axpy
