@@ -198,4 +198,10 @@ the elements of a vector. The goal is to learn about the shared memory etc.
        cublasStatus_t cublasDestroy(cublasHandle_t handle)
        ```
 
+     - Link your program with cuBLAS:
+     
+       ```
+       nvcc -o cublas_sum cublas_sum.cu -lcublas
+       ```
+
     More information: https://docs.nvidia.com/cuda/cublas/index.html#cublas-lt-t-gt-asum
