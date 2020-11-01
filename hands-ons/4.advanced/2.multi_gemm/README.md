@@ -1,4 +1,4 @@
-# Multiple CUDA streams
+# Multiple streams
 
 ## Objectives
 
@@ -63,8 +63,8 @@ initialized as a permutation matrix for space and time saving reasons.
     
     Compile and test your modified program
 
- 4. (challenge) Modify the program such that all matrix-matrix multiplications are
-    performed using batched BLAS routines:
+ 4. (challenge) Modify the program such that all matrix-matrix multiplications
+    are performed using a batched BLAS routine:
     
     ```
     cublasStatus_t cublasDgemmBatched(
