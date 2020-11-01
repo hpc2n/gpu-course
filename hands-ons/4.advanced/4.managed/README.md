@@ -1,9 +1,8 @@
-# Managed memory and cuBLAS
+# Managed memory
 
 ## Objectives
 
  - Learn how to use managed memory.
- - Learn how to use cuBLAS
 
 ## Instructions
 
