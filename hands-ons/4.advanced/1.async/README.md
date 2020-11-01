@@ -1,8 +1,8 @@
-# CUDA streams and asynchronous data transfers
+# Streams and asynchronous data transfers
 
 ## Objectives
 
- - Learn how to use CUDA streams
+ - Learn how to use streams
  - Learn how to use asynchronous data transfers
 
 ## Instructions
