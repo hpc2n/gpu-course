@@ -56,7 +56,7 @@
      - ax: 1000 1000000
      - gemm: 500 1000 2000
      
-    How do the codes compare against each other.
+    How do the codes compare against each other?
     
  4. Profile the codes with the `nv-nsight-cu-cli` profiler:
  

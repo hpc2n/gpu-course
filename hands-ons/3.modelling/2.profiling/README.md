@@ -3,7 +3,7 @@
 ## Objectives
 
  - Learn how to use the `nv-nsight-cu-cli` profiler.
- - Learn how much how much you improved the codes yesterday.
+ - Learn how much you improved the codes yesterday.
 
 ## Instructions
 
