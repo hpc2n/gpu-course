@@ -120,7 +120,7 @@ $ OMP_NUM_THREADS=14 run_gpu ./gemm.cpu 2000
 Runtime was 0.060 s.
 Floprate was 267 GFlops.
 Memory throughput (naive) 17101 GB/s.
-$ OMP_NUM_THREADS=14 run_gpu ./gemm.cuda 2000
+$ run_gpu ./gemm.cuda 2000
 Runtime was 0.003 s.
 Floprate was 4721 GFlops.
 Memory throughput (naive) 302243 GB/s.
