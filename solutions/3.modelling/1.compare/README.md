@@ -31,11 +31,11 @@ are within the expected ranges.
 $ OMP_NUM_THREADS=1 run_gpu ./gemm.cpu 5000
 Runtime was 4.968 s.
 Floprate was 50 GFlops.
-Memory throughput (naive) 3221 GB/s.
+Memory throughput (naive) 403 GB/s.
 $ OMP_NUM_THREADS=14 run_gpu ./gemm.cpu 5000
 Runtime was 0.525 s.
 Floprate was 476 GFlops.
-Memory throughput (naive) 30453 GB/s.
+Memory throughput (naive) 3807 GB/s.
 ```
 
 The core count does effect the performance and the code scales past 10 cores.
@@ -47,7 +47,7 @@ L2 and L1 caches.
 $ run_gpu ./gemm.cuda 5000
 Runtime was 0.041 s.
 Floprate was 6078 GFlops.
-Memory throughput (naive) 389032 GB/s.
+Memory throughput (naive) 48629 GB/s.
 ```
 
 The GPU is about 13 times faster. The reported floprate is within the expected
@@ -91,11 +91,11 @@ larger.
 $ OMP_NUM_THREADS=14 run_gpu ./gemm.cpu 500
 Runtime was 0.018 s.
 Floprate was 14 GFlops.
-Memory throughput (naive) 911 GB/s.
+Memory throughput (naive) 114 GB/s.
 $ run_gpu ./gemm.cuda 500
 Runtime was 0.000 s.
 Floprate was 1330 GFlops.
-Memory throughput (naive) 85189 GB/s.
+Memory throughput (naive) 10649 GB/s.
 ```
 
 The performance has dropped significantly. The problem size should clearly be
@@ -105,11 +105,11 @@ larger.
 $ OMP_NUM_THREADS=14 run_gpu ./gemm.cpu 1000
 Runtime was 0.039 s.
 Floprate was 51 GFlops.
-Memory throughput (naive) 3256 GB/s.
+Memory throughput (naive) 407 GB/s.
 $ run_gpu ./gemm.cuda 1000
 Runtime was 0.001 s.
 Floprate was 3862 GFlops.
-Memory throughput (naive) 247302 GB/s.
+Memory throughput (naive) 30913 GB/s.
 ```
 
 The CPU performance has dropped significantly. The problem size should clearly
@@ -119,11 +119,11 @@ be larger. The GPU is performing reasonably well.
 $ OMP_NUM_THREADS=14 run_gpu ./gemm.cpu 2000
 Runtime was 0.060 s.
 Floprate was 267 GFlops.
-Memory throughput (naive) 17101 GB/s.
+Memory throughput (naive) 2138 GB/s.
 $ run_gpu ./gemm.cuda 2000
 Runtime was 0.003 s.
 Floprate was 4721 GFlops.
-Memory throughput (naive) 302243 GB/s.
+Memory throughput (naive) 37780 GB/s.
 ```
 
 The CPU performance has dropped significantly. The problem size should clearly
@@ -248,7 +248,7 @@ index b9304f3..7eca6a4 100644
 $ run_gpu ./a.out 5000
 Runtime was 0.144 s.
 Floprate was 1732 GFlops.
-Memory throughput (naive) 110881 GB/s.
+Memory throughput (naive) 13860 GB/s.
 ```
 
 The performance has dropped to one fourth of what it was earlier. The PCI-E bus
