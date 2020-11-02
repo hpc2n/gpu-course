@@ -68,7 +68,7 @@ int main(int argc, char const **argv)
     printf("Runtime was %.3f s.\n", time);
     printf("Floprate was %.0f GFlops.\n", (2.0*n*n*n/time)*1E-9);
     printf("Memory throughput (naive) %.0f GB/s.\n", 
-        ((8.0*n*n)*(2*n+1)*sizeof(double)/time)*1E-9);
+        ((1.0*n*n)*(2*n+1)*sizeof(double)/time)*1E-9);
 
     // free the allocated memory
 
