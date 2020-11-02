@@ -23,8 +23,8 @@ static int DIVCEIL(int a, int b)
 }
 
 //
-// A kernel that partially sums together a vector x. The partial sums are stored
-// to a vector y such that
+// A kernel that partially sums together the elements of a vector x. The partial
+// sums are stored to a vector y such that
 //     y[i] = x[i] + x[i+thread_count] + x[i+2*thread_count] + ...
 //
 __global__ void partial_sum_kernel(int n, double const *x, double *y)
@@ -39,8 +39,7 @@ __global__ void partial_sum_kernel(int n, double const *x, double *y)
     y[thread_id] = v;
 }
 
-// a function that sums together a vector x and stores the result to the first
-// element of the vector
+// a function that sums together the elements of a vector x
 double final_sum(int n, double *x)
 {
     double v = 0;
