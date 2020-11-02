@@ -38,7 +38,7 @@ Floprate was 476 GFlops.
 Memory throughput (naive) 30453 GB/s.
 ```
 
-The core count does effect the performance but the code scales past 10 cores.
+The core count does effect the performance and the code scales past 10 cores.
 The reported floprate is within the expected range. The reported memory
 throughput is incorrect because modern GEMM implementations cache data to the
 L2 and L1 caches.
