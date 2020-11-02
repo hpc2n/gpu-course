@@ -13,14 +13,23 @@
     hands-on [1.basics/3.memory](../../1.basics/3.memory/). You can use your
     own solution if you want.
 
- 2. Create a CUDA stream using the following functions:
+ 2. Compile and run the program:
+
+    ```
+    $ nvcc -o axpy axpy.cu 
+    $ srun ... ./axpy 100E6
+    Runtime was 0.501293 seconds.
+    Residual = 0.000000e+00
+    ```
+
+ 3. Create a CUDA stream using the following functions:
  
     ```
     __host__ cudaError_t cudaStreamCreate ( cudaStream_t* pStream )
     __host__ __device__ cudaError_t cudaStreamDestroy ( cudaStream_t stream )
     ```
 
- 3. Pin the vectors `x` and `y` to the host memory:
+ 4. Pin the vectors `x` and `y` to the host memory:
  
     ```
     __host__ cudaError_t cudaHostRegister (
@@ -30,7 +39,7 @@
 
     Use the `cudaHostRegisterDefault` flag.
 
- 4. Modify the program such that all data transfers are done asynchronously:
+ 5. Modify the program such that all data transfers are done asynchronously:
  
     ```
     __host__ __device__ cudaError_t cudaMemcpyAsync (
@@ -38,14 +47,14 @@
         cudaStream_t stream = 0 )
     ```
 
- 5. Modify the kernel launch such that the kernel is placed to the stream
+ 6. Modify the kernel launch such that the kernel is placed to the stream
     you created:
     
     ```
     axpy_kernel<<<blocks, threads, 0, stream>>>(n, alpha, d_x, d_y);
     ```
     
- 6. Wait until the stream is empty:
+ 7. Wait until the stream is empty:
  
     ```
     __host__ cudaError_t cudaStreamSynchronize ( cudaStream_t stream )
@@ -53,7 +62,7 @@
     
     Compile and run your modified program.
 
- 7. Measure the run time using events:
+ 8. Measure the run time using events:
 
     ```
     __host__ cudaError_t cudaEventCreate ( cudaEvent_t* event )
