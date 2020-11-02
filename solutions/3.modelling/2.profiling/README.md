@@ -134,3 +134,49 @@ $ run_gpu nv-nsight-cu-cli ./gemv_model 5000 5000
 
 We can see that `SOL FB` and `Memory [%]` are both around 95% which is high.
 `SM [%]` is very low and indicates that the code is memory bound.
+
+## Step 3
+
+### ex
+
+We get
+
+```
+                               n - 1              1
+arithmetical intensity (AI) = ------- ---------> --- Flop / Byte.
+                               8 * n   n -> inf   8
+```
+
+Therefore,
+
+```
+Floprate = min { Peak floprate, AI * Bandwidth } 
+         = 900 / 8 GFlops 
+         = 112.5 GFlops.
+```
+
+This is `112.5 GFlops / 7000 GFlops = 0.016 = 1.6%` of the theoretical peak.
+The number is not identical with `SM [%]` but they are relatively close to each
+other.
+
+### gemm
+
+We get
+
+```
+                                  n * (2 * n)                   1
+arithmetical intensity (AI) = --------------------- ---------> --- Flop / Byte.
+                               n * (2 * n + 1) * 8   n -> inf   8
+```
+
+Therefore,
+
+```
+Floprate = min { Peak floprate, AI * Bandwidth } 
+         = 900 / 8 GFlops 
+         = 112.5 GFlops.
+```
+
+This is `112.5 GFlops / 7000 GFlops = 0.016 = 1.6%` of the theoretical peak.
+The number is not identical with `SM [%]` but they are relatively close to each
+other.

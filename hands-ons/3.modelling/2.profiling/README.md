@@ -31,3 +31,20 @@
     
     Investigate the outputs. Use the "GPU Speed Of Light" (SOL) analysis to
     explain the performance figures.
+
+ 3. Calculate arithmetical intensity for both codes:
+ 
+    ```
+                                       total number of flops
+    arithmetical intensity (AI) = --------------------------------- 
+                                  total number of bytes transferred
+    ```
+    
+    Use the following formula to estimate the expected Floprate:
+    
+    ```
+    Floprate = min { Peak floprate, AI * Bandwidth },
+    ```
+    
+    where `Peak floprate = 7000 Gflops` and `Bandwidth = 900 GB/s`. Does your
+    results agree with `SM [%]`?
