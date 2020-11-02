@@ -10,7 +10,7 @@
  1. Compile all four codes:
  
     ```
-    $ gcc -o ax.cpu ax.c -fopenmp
+    $ gcc -o ax.cpu ax.c -fopenmp -O3 -march=native
     $ nvcc -o ax.cuda ax.cu
     $ gcc -o gemm.cpu gemm.c ${LIBBLAS}
     $ nvcc -o gemm.cuda gemm.cu -lcublas
