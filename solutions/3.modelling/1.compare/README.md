@@ -150,7 +150,7 @@ $ run_gpu nv-nsight-cu-cli ./ax.cuda 500E6
 ```
 
 The field `SM [%]` indicates that CUDA cores are mostly inactive. The `SOL FB`
-and `Memory [%]` indicate than the memory bus is busy. The code is memory bound.
+and `Memory [%]` indicate that the memory bus is busy. The code is memory bound.
 
 ```
 $ run_gpu nv-nsight-cu-cli ./gemm.cuda 5000
@@ -170,7 +170,7 @@ $ run_gpu nv-nsight-cu-cli ./gemm.cuda 5000
 ```
 
 The field `SM [%]` indicates that CUDA cores are busy. The `SOL FB` and `Memory [%]` 
-indicate than the memory bus reasonably busy. The code is memory bound.
+indicate that the memory bus is reasonably busy. The code is memory bound.
 
 ## Step 5
 

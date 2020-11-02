@@ -80,10 +80,10 @@ $ run_gpu nv-nsight-cu-cli ./sum_model 500E6 512
 We can see that for the first kernel `SOL FB` and `Memory [%]` are both around
 90% which is high. However, the performance of the second kernel is much lower.
 When looking at the `Duration` field, we can see that the starting point kernel
-was actually faster than the two model solution kernel combined. However, note 
-than these numbers do not include transfer times etc.
+was actually faster than the two model solution kernels combined. However, note 
+that these numbers do not include transfer times etc.
 
-Also remember that goal of the `2.intermediate/1.sum` hands-on was not to write
+Also remember that the goal of the `2.intermediate/1.sum` hands-on was not to write
 an optimal summation code. The point was to learn to use shared memory.
 
 ### gemv
