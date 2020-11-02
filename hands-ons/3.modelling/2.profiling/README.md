@@ -17,9 +17,10 @@
  2. Profile all codes with the `nv-nsight-cu-cli` profiler:
  
     ```
-    $ srun .... nv-nsight-cu-cli ./sum_start 100000 512
-    $ srun .... nv-nsight-cu-cli ./sum_yours 100000 512
-    $ srun .... nv-nsight-cu-cli ./sum_model 100000 512
+    $ srun .... nv-nsight-cu-cli ./sum_start 500E6 10000
+    $ srun .... nv-nsight-cu-cli ./sum_start 500E6 100000
+    $ srun .... nv-nsight-cu-cli ./sum_yours 500E6 512
+    $ srun .... nv-nsight-cu-cli ./sum_model 500E6 512
     ```
     
     ```
