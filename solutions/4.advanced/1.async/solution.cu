@@ -155,6 +155,7 @@ int main(int argc, char const **argv)
     // free the allocated memory
 
     free(x), free(y); free(_y);
+    CHECK_CUDA_ERROR(cudaStreamDestroy(stream));
     CHECK_CUDA_ERROR(cudaEventDestroy (start));
     CHECK_CUDA_ERROR(cudaEventDestroy (stop));
     CHECK_CUDA_ERROR(cudaFree(d_x));
