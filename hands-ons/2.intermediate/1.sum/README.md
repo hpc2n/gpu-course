@@ -79,10 +79,8 @@ the elements of a vector. The goal is to learn about the shared memory etc.
 
         double v = 0;
 
-        // Each thread computes a partial sum as done in the partial_sum_kernel
-        // kernel and stores the result to the variable v. Remember, in this
-        // case, we have only one thread block and you should therefore use the
-        // threadIdx.x and blockDim.x constants directly.
+        // each thread computes a partial sum as done in the partial_sum_kernel
+        // kernel and stores the result to the variable v
         for (....
 
         // store the partial sums to the shared memory array
