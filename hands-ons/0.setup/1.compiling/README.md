@@ -93,7 +93,7 @@
      
     and the last argument the is the program itself.
     
-    You can also create an alias for the command:
+ 5. You can also create an **alias** for the command:
     
     ```
     $ alias run_gpu="srun --account=SNIC2020-9-161 --reservation=snic2020-9-161-day1 --ntasks=1 --gres=gpu:v100:1,gpuexcl --time=00:02:00"
@@ -102,7 +102,7 @@
     GPU says, Hello world!
     ```
 
- 5. Create a file called `batch.sh` with the following contents:
+ 6. Create a file called `batch.sh` with the following contents:
  
     ```
     #!/bin/bash
