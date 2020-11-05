@@ -137,7 +137,7 @@ We can see that `SOL FB` and `Memory [%]` are both around 95% which is high.
 
 ## Step 3
 
-### ex
+### sum
 
 We get
 
