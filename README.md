@@ -1,5 +1,8 @@
 # Introduction to GPU programming: When and how to use GPU-acceleration? (fall 2019)
 
+For earlier and updated courses, see
+[branches](https://git.cs.umu.se/mirkom/gpu_course/-/branches). 
+
 ## Course description
 
 GPU-acceleration has been shown to provide significant performance benefits in
