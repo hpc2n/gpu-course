@@ -1,6 +1,6 @@
 # Heterogeneous computing with performance modelling (fall 2020)
 
-For earlier courses, see
+For earlier and updated courses, see
 [branches](https://git.cs.umu.se/mirkom/gpu_course/-/branches). 
 
 ## Course description
