@@ -27,6 +27,8 @@ to provide the necessary information for avoiding the most common pitfalls.
 knowledge but basic understanding of the C language and parallel programming are
 required for the hands-ons.
 
+**Lecture recordings**: [YouTube playlist](https://www.youtube.com/playlist?list=PL6jMHLEmPVLxMm_e4Vwd6-5HUOpDpYaGQ)
+
 **Date**: 2020-11-04 and 2020-11-05 (two day course)
 
 **Time**: 9:00-17:00 each day
