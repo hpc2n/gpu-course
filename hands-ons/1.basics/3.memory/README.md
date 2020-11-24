@@ -2,20 +2,20 @@
 
 ## Objectives
 
- - Learn how to modify CUDA kernels.
+ - Learn how to modify HIP kernels.
  - Learn how to allocate memory.
  - Learn how to move data from the host memory to the global memory and back.
  - Learn how to record runtime.
 
 ## Instructions
 
- 1. Carefully read through the `ax.cu` file. Make sure that you have an idea
+ 1. Carefully read through the `ax.cpp` file. Make sure that you have an idea
     of what each line of code does.
 
  2. The program requires a single argument. Compile and run the program:
  
     ```
-    $ nvcc -o ax ax.cu
+    $ nvcc -o ax ax.cpp --x cu
     $ srun ... ./ax 10000
     Residual = 0.000000e+00
     ```
@@ -24,7 +24,7 @@
      - A random vector `y` and it's duplicate `_y` are generated.
        The program argument `n` defines the length of the vector `y`.
      - The vector `y` is copied to a global memory buffer `d_y`.
-     - A CUDA kernel multiplies the vector `d_y` with a supplied scalar `alpha`.
+     - A HIP kernel multiplies the vector `d_y` with a supplied scalar `alpha`.
      - The vector `d_y` is copied back to the host memory buffer `y`.
      - The result is validated by computing
      
@@ -54,7 +54,7 @@
  4. Time how long it takes to compute the AXPY operation with different
     vector lengths. Use n = 100, n = 10000 and n = 1000000. You should record
     the current time i) just before launching the kernel and ii) just after the
-    `cudaMemcpy` function call. Write down your results.
+    `hipMemcpy` function call. Write down your results.
     
     The execution time can be measured in many different ways. For now, we will
     use the `clock_gettime` function:
@@ -83,6 +83,6 @@
        printf("Runtime was %f seconds.\n", time);
        ```
 
- 5. Try end the timing just after the kernel launch. What happens? Why?   
+ 5. Try end the timing just after the kernel launch. What happens? Why?
     
     

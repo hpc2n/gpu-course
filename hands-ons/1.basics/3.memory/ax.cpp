@@ -1,13 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <hip/hip_runtime.h>
 
-#define CHECK_CUDA_ERROR(exp) {                     \
-    cudaError_t ret = (exp);                        \
-    if (ret != cudaSuccess) {                       \
+#define CHECK_HIP_ERROR(exp) {                      \
+    hipError_t ret = (exp);                         \
+    if (ret != hipSuccess) {                        \
         fprintf(stderr, "[error] %s:%d: %s (%s)\n", \
             __FILE__, __LINE__,                     \
-            cudaGetErrorName(ret),                  \
-            cudaGetErrorString(ret));               \
+            hipGetErrorName(ret),                   \
+            hipGetErrorString(ret));                \
         exit(EXIT_FAILURE);                         \
     }                                               \
 }
@@ -18,12 +19,12 @@ __global__ void ax_kernel(int n, double alpha, double *y)
     //
     // Each thread is going to begin from the array element that matches it's
     // global index number. For blockDim.x = 4, gridDim.x 2, we have:
-    // threadIdx.x : 0 1 2 3 0 1 2 3
-    // blockIdx.x  : 0 0 0 0 1 1 1 1
-    // blockDim.x  : 4 4 4 4 4 4 4 4
-    // thread_id   : 0 1 2 3,4 5 6 7
+    // hipThreadIdx_x : 0 1 2 3 0 1 2 3
+    // hipBlockIdx_x  : 0 0 0 0 1 1 1 1
+    // hipBlockDim_x  : 4 4 4 4 4 4 4 4
+    // thread_id      : 0 1 2 3,4 5 6 7
     //
-    int thread_id = blockIdx.x * blockDim.x + threadIdx.x;
+    int thread_id = hipBlockIdx_x * hipBlockDim_x + hipThreadIdx_x;
     int thread_count = gridDim.x * blockDim.x;
 
     //
@@ -76,25 +77,25 @@ int main(int argc, char const **argv)
     // allocate device memory
 
     double *d_y;
-    CHECK_CUDA_ERROR(cudaMalloc(&d_y, n*sizeof(double)));
+    CHECK_HIP_ERROR(hipMalloc(&d_y, n*sizeof(double)));
 
     // copy the vector from the host memory to the device memory
 
-    CHECK_CUDA_ERROR(
-        cudaMemcpy(d_y, y, n*sizeof(double), cudaMemcpyHostToDevice));
+    CHECK_HIP_ERROR(
+        hipMemcpy(d_y, y, n*sizeof(double), hipMemcpyHostToDevice));
 
     // launch the kernel
 
     dim3 threads = 256;
     dim3 blocks = max(1, min(256, n/threads.x));
-    ax_kernel<<<blocks, threads>>>(n, alpha, d_y);
+    hipLaunchKernelGGL(ax_kernel, blocks, threads, 0, 0, n, alpha, d_y);
 
-    CHECK_CUDA_ERROR(cudaGetLastError());
+    CHECK_HIP_ERROR(hipGetLastError());
 
     // copy the vector from the device memory to the host memory
 
-    CHECK_CUDA_ERROR(
-        cudaMemcpy(y, d_y, n*sizeof(double), cudaMemcpyDeviceToHost));
+    CHECK_HIP_ERROR(
+        hipMemcpy(y, d_y, n*sizeof(double), hipMemcpyDeviceToHost));
 
     // validate the result by computing sqrt((x-alpha*_x)^2)
 
@@ -114,5 +115,5 @@ int main(int argc, char const **argv)
     // free the allocated memory
 
     free(y); free(_y);
-    CHECK_CUDA_ERROR(cudaFree(d_y));
+    CHECK_HIP_ERROR(hipFree(d_y));
 }
